@@ -12,25 +12,21 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('t_stok', function (Blueprint $table) {
-            $table->id('stok_id');  // primary key tunggal
-            $table->unsignedBigInteger('penjualan_id')->index();  // foreign key atau kolom biasa
+            $table->id('stok_id');  // primary key auto increment
             $table->integer('stok_jumlah');
             $table->dateTime('stok_tanggal');
             $table->timestamps();
             $table->unsignedBigInteger('barang_id')->index();
             $table->unsignedBigInteger('user_id')->index();
+
             $table->foreign('barang_id')->references('barang_id')->on('m_barang');
             $table->foreign('user_id')->references('user_id')->on('m_user');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::table('t_stok', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('t_stok');
     }
 };
+
