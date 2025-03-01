@@ -31,7 +31,7 @@ Route::resource('items', ItemController::class);    // mendefinisikan route untu
 //     return 'Hello World';
 // });
 
-Route::get('/hello', [WelcomeController::class, 'hello']);
+// Route::get('/hello', [WelcomeController::class, 'hello']);
 
 Route::get('/world', function(){
     return 'World';
@@ -117,7 +117,7 @@ Route::get('/user/{name?}', function ($name=null){
 // Route::view('/welcome', 'welcome', ['name' => 'Taylor']);
 
 Route::get('/', [Homecontroller::class, 'index']);
-Route::get('/about', [AboutController::class, 'about']);
+// Route::get('/about', [AboutController::class, 'about']);
 Route::get('/articles/{id}', [ArticleController::class, 'articles']);
 
 Route::resource('photos', PhotoController::class)-> only([
@@ -138,5 +138,5 @@ Route::resource('photos', PhotoController::class)->except([
 //     return view('blog.hello', ['name' => 'Andi']);
 // });
 
-Route::get('/greeting', [WelcomeController::class, 'greeting']);
+// Route::get('/greeting', [WelcomeController::class, 'greeting']);
 
