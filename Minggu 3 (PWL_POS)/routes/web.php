@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LevelController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,22 +17,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
+Route::get('/', function () {
+    return view('welcome');
+});
+
+
+Route::get('/level', [LevelController::class, 'index']);
+
+// Route::get('/', [HomepageController::class, 'index']);
+
+// Route::prefix('product')->group(function() {
+//     Route::get('/', [ProductController::class, 'index'])->name('product.index');
+//     Route::get('/category/food-beverage', [ProductController::class, 'foodBeverage'])->name('product.food-beverage');
+//     Route::get('/category/beauty-health', [ProductController::class, 'beautyHealth'])->name('product.beauty-health');
+//     Route::get('/category/home-care', [ProductController::class, 'homeCare'])->name('product.home-care');
+//     Route::get('/category/baby-kid', [ProductController::class, 'babyKids'])->name('product.baby-kid');
 // });
 
-Route::get('/', [HomepageController::class, 'index']);
+// Route::get('/user/{id}/name/{name}', [UserController::class, 'show']);
 
-Route::prefix('product')->group(function() {
-    Route::get('/', [ProductController::class, 'index'])->name('product.index');
-    Route::get('/category/food-beverage', [ProductController::class, 'foodBeverage'])->name('product.food-beverage');
-    Route::get('/category/beauty-health', [ProductController::class, 'beautyHealth'])->name('product.beauty-health');
-    Route::get('/category/home-care', [ProductController::class, 'homeCare'])->name('product.home-care');
-    Route::get('/category/baby-kid', [ProductController::class, 'babyKids'])->name('product.baby-kid');
-});
-
-Route::get('/user/{id}/name/{name}', [UserController::class, 'show']);
-
-Route::get('/sales', function(){
-    return view('transaction');
-});
+// Route::get('/sales', function(){
+//     return view('transaction');
+// });
