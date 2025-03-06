@@ -17,7 +17,7 @@ class UserController extends Controller
         // 'level_id' => 4
         // ];
 
-        //tambah data dengan Eloquent Model
+        // //tambah data dengan Eloquent Model
         $data = [
             'nama' => 'Pelanggan Pertama',
         ];
