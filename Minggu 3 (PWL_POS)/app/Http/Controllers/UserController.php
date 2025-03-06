@@ -26,11 +26,11 @@ class UserController extends Controller
         UserModel::where('username', 'customer-1')->update($data);  //update data user
 
 
-        // // // Ambil semua data dari tabel m_user (sesuai model UserModel)
-        // $user = UserModel::all();
+        // // Ambil semua data dari tabel m_user (sesuai model UserModel)
+        $user = UserModel::all();
 
-        // // Kirim data ke view user.blade.php
-        // return view('user', ['data' => $user]);
+        // Kirim data ke view user.blade.php
+        return view('user', ['data' => $user]);
     }
 }
 
