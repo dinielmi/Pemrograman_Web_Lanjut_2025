@@ -62,10 +62,10 @@ class UserController extends Controller
 
 
     //praktikum 2.6
-    public function index() {
-        $user = UserModel::all();
-        return view('user', ['data' => $user]);
-    }
+    // public function index() {
+    //     $user = UserModel::all();
+    //     return view('user', ['data' => $user]);
+    // }
 
     public function tambah(){
         return view('user_tambah');
@@ -86,8 +86,7 @@ class UserController extends Controller
         return view('user_ubah', ['data' => $user]);
     }
 
-        public function ubah_simpan($id, Request $request)
-    {
+    public function ubah_simpan($id, Request $request){
         $user = UserModel::find($id);
 
         $user->username = $request->username;
@@ -105,6 +104,16 @@ class UserController extends Controller
         $user->delete();
 
         return redirect('/user');
+    }
+    
+    // public function index(){
+    //     $user =UserModel::with('level')->get();
+    //     dd($user);
+    // }
+
+    public function index() {
+        $user = UserModel::with('level')->get();
+        return view('user', ['data' => $user]);
     }
 
 }
