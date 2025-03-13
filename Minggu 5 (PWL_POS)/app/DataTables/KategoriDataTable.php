@@ -84,7 +84,7 @@ class KategoriDataTable extends DataTable
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
-                ->width(120)
+                ->width(140)
                 ->addClass('text-center'),
         ];
     }
