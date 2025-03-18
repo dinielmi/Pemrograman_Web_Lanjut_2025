@@ -1,37 +1,48 @@
 <?php
 
-use App\Http\Controllers\HomepageController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomepageController; // Import HomepageController
+use App\Http\Controllers\ProductController;  // Import ProductController
+use App\Http\Controllers\UserController;     // Import UserController
+use Illuminate\Support\Facades\Route;        // Import Route dari Laravel
 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
+| File ini digunakan untuk mendefinisikan semua routing dalam aplikasi POS.
+| Setiap route akan menghubungkan URL dengan fungsi atau controller tertentu.
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+// Route untuk halaman utama (Homepage)
+Route::get('/', [HomepageController::class, 'index']); 
+// Saat mengakses "/", akan memanggil method `index` di HomepageController
 
-Route::get('/', [HomepageController::class, 'index']);
-
+// Group route untuk produk (Prefix "product" akan ditambahkan ke semua URL di dalamnya)
 Route::prefix('product')->group(function() {
-    Route::get('/', [ProductController::class, 'index'])->name('product.index');
-    Route::get('/category/food-beverage', [ProductController::class, 'foodBeverage'])->name('product.food-beverage');
-    Route::get('/category/beauty-health', [ProductController::class, 'beautyHealth'])->name('product.beauty-health');
-    Route::get('/category/home-care', [ProductController::class, 'homeCare'])->name('product.home-care');
-    Route::get('/category/baby-kid', [ProductController::class, 'babyKids'])->name('product.baby-kid');
+    Route::get('/', [ProductController::class, 'index'])->name('product.index'); 
+    // Akses "/product" → Menampilkan daftar produk (ProductController@index)
+
+    Route::get('/category/food-beverage', [ProductController::class, 'foodBeverage'])->name('product.food-beverage'); 
+    // Akses "/product/category/food-beverage" → Menampilkan produk kategori makanan & minuman
+
+    Route::get('/category/beauty-health', [ProductController::class, 'beautyHealth'])->name('product.beauty-health'); 
+    // Akses "/product/category/beauty-health" → Menampilkan produk kategori kecantikan & kesehatan
+
+    Route::get('/category/home-care', [ProductController::class, 'homeCare'])->name('product.home-care'); 
+    // Akses "/product/category/home-care" → Menampilkan produk kategori perawatan rumah
+
+    Route::get('/category/baby-kid', [ProductController::class, 'babyKids'])->name('product.baby-kid'); 
+    // Akses "/product/category/baby-kid" → Menampilkan produk kategori bayi & anak-anak
 });
 
-Route::get('/user/{id}/name/{name}', [UserController::class, 'show']);
+// Route dengan parameter (Menampilkan user berdasarkan ID dan Nama)
+Route::get('/user/{id}/name/{name}', [UserController::class, 'show']); 
+// Contoh URL: "/user/1/name/Alex" → Akan memanggil method `show` di UserController dengan ID=1 & name="Alex"
 
+// Route untuk halaman transaksi (Langsung menampilkan view tanpa controller)
 Route::get('/sales', function(){
-    return view('transaction');
+    return view('transaction'); // Mengembalikan tampilan "resources/views/transaction.blade.php"
 });
+
