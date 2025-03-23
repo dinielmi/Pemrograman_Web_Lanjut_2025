@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="{{ asset('adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css') }}">
-
     @stack('css') <!-- Custom CSS -->
 </head>
 <body>
@@ -68,5 +67,6 @@
 </script>
 
 @stack('js') <!-- Custom JS -->
+
 </body>
 </html>

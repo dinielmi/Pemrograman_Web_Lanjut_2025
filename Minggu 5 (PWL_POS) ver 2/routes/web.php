@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\BarangController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LevelController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
@@ -19,11 +21,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 
 Route::get('/level', [LevelController::class, 'index']);
-Route::get('/kategori', [KategoriController::class, 'index']);
+// Route::get('/kategori', [KategoriController::class, 'index']);
 Route::get('/user', [UserController::class, 'index']);
 
 //praktikum 2.6
@@ -46,4 +48,46 @@ Route::group(['prefix' => 'user'], function () {
     Route::delete('/{id}', [UserController::class, 'destroy']);  // menghapus data user
 });
 
-Route::delete('/{id}', [UserController::class, 'destroy']);
+
+Route::prefix('level')->group(function() {
+    Route::get('/', [LevelController::class, 'index']);
+    Route::get('/create', [LevelController::class, 'create']);
+    Route::post('/', [LevelController::class, 'store']);
+    Route::get('/{id}/edit', [LevelController::class, 'edit']);
+    Route::put('/{id}', [LevelController::class, 'update']);
+    Route::delete('/{id}', [LevelController::class, 'destroy']);
+    Route::post('/levels/data', [LevelController::class, 'getLevels'])->name('levels.data');
+});
+
+Route::prefix('kategori')->group(function () {
+    Route::get('/', [KategoriController::class, 'index']);
+    Route::get('/list', [KategoriController::class, 'getData']);
+    Route::get('/create', [KategoriController::class, 'create']);
+    Route::post('/store', [KategoriController::class, 'store']);
+    Route::get('/edit/{id}', [KategoriController::class, 'edit']);
+    Route::post('/update/{id}', [KategoriController::class, 'update']);
+    Route::delete('/delete/{id}', [KategoriController::class, 'delete']);
+});
+
+
+Route::prefix('barang')->group(function () {
+    Route::get('/', [BarangController::class, 'index']);
+    Route::get('/data', [BarangController::class, 'getData'])->name('barang.data'); 
+    Route::get('/create', [BarangController::class, 'create']);
+    Route::post('/store', [BarangController::class, 'store']);
+    Route::get('/edit/{barang}', [BarangController::class, 'edit']);
+    Route::put('/update/{barang}', [BarangController::class, 'update']);
+    Route::delete('/delete/{barang}', [BarangController::class, 'destroy']);
+});
+
+
+Route::prefix('suppliers')->group(function () {
+    Route::get('/', [SupplierController::class, 'index']);
+    Route::get('/create', [SupplierController::class, 'create']);
+    Route::post('/store', [SupplierController::class, 'store']);
+    Route::get('/edit/{id}', [SupplierController::class, 'edit']);
+    Route::put('/update/{id}', [SupplierController::class, 'update']);
+    Route::delete('/destroy/{id}', [SupplierController::class, 'destroy']);
+});
+
+    
