@@ -73,16 +73,15 @@ Route::group(['prefix' => 'kategori'], function () {
 });
 
 
-
-Route::prefix('barang')->group(function () {
-    Route::get('/', [BarangController::class, 'index']);
-    Route::post('/list', [BarangController::class, 'list'])->name('barang.list');
-    // Route::get('/data', [BarangController::class, 'getData'])->name('barang.data'); 
-    Route::get('/create', [BarangController::class, 'create']);
-    Route::post('/store', [BarangController::class, 'store']);
-    Route::get('/edit/{barang}', [BarangController::class, 'edit']);
-    Route::put('/update/{barang}', [BarangController::class, 'update']);
-    Route::delete('/delete/{barang}', [BarangController::class, 'destroy']);
+Route::group(['prefix' => 'barang'], function () {
+    Route::get('/',[BarangController::class, 'index']);
+    Route::post('/list',[BarangController::class, 'list']);
+    Route::get('/create',[BarangController::class, 'create']);
+    Route::post('/',[BarangController::class, 'store']);
+    Route::get('/{id}',[BarangController::class, 'show']);
+    Route::get('/{id}/edit',[BarangController::class, 'edit']);
+    Route::put('/{id}',[BarangController::class, 'update']);
+    Route::delete('/{id}',[BarangController::class, 'destroy']);
 });
 
 
