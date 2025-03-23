@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class SupplierModel extends Model
 {
     use HasFactory;
-    protected $table = 'table_supplier';
+    protected $table = 'm_supplier';
     protected $primaryKey = 'supplier_id';
     /**
      * The attributes that are mass assignable.

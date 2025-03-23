@@ -85,7 +85,7 @@ Route::group(['prefix' => 'barang'], function () {
 });
 
 
-Route::group(['prefix' => 'suppliers'], function () {
+Route::group(['prefix' => 'supplier'], function () {
     Route::get('/',[SupplierController::class, 'index']);
     Route::post('/list',[SupplierController::class, 'list']);
     Route::get('/create',[SupplierController::class, 'create']);
