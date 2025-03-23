@@ -105,6 +105,8 @@
             dataUser.ajax.reload();
         });
 
+        
+
    });
 </script> 
 @endpush

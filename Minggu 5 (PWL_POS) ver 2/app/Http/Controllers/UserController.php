@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\LevelModel;
+use App\Models\User;
 use App\Models\UserModel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -174,5 +175,19 @@ class UserController extends Controller
             return redirect('/user')->with('error', 'Data user gagal dihapus karena masih terdapat tabel lain yang terkait dengan data ini');
         }
     }
+
+    // UserController.php
+    public function getUsers(Request $request)
+    {
+        $users = User::select('username', 'email')->get();
+
+        return response()->json([
+            'draw' => $request->draw,
+            'recordsTotal' => $users->count(),
+            'recordsFiltered' => $users->count(),
+            'data' => $users
+        ]);
+    }
+
 
 }
