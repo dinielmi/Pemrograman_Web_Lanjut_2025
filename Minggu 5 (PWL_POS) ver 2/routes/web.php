@@ -50,15 +50,15 @@ Route::group(['prefix' => 'user'], function () {
 });
 
 
-Route::prefix('level')->group(function() {
-    Route::get('/', [LevelController::class, 'index']);
-    Route::post('/list', [LevelController::class, 'list'])->name('level.list');
-    Route::get('/create', [LevelController::class, 'create']);
-    Route::post('/', [LevelController::class, 'store']);
-    Route::get('/{id}/edit', [LevelController::class, 'edit']);
-    Route::put('/{id}', [LevelController::class, 'update'])->name('level.update');
-    Route::delete('/{id}', [LevelController::class, 'destroy']);
-    // Route::post('/levels/data', [LevelController::class, 'getLevels'])->name('levels.data');
+Route::group(['prefix' => 'level'], function () {
+    Route::get('/',[LevelController::class, 'index']);
+    Route::post('/list',[LevelController::class, 'list']);
+    Route::get('/create',[LevelController::class, 'create']);
+    Route::post('/',[LevelController::class, 'store']);
+    Route::get('/{id}',[LevelController::class, 'show']);
+    Route::get('/{id}/edit',[LevelController::class, 'edit']);
+    Route::put('/{id}',[LevelController::class, 'update']);
+    Route::delete('/{id}',[LevelController::class, 'destroy']);
 });
 
 Route::prefix('kategori')->group(function () {
