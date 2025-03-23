@@ -86,15 +86,15 @@ Route::prefix('barang')->group(function () {
 });
 
 
-Route::prefix('suppliers')->group(function () {
-    Route::get('/', [SupplierController::class, 'index']);
-    Route::post('/list', [SupplierController::class, 'list'])->name('supplier.list');
-    Route::get('/create', [SupplierController::class, 'create']);
-    Route::post('/store', [SupplierController::class, 'store']);
-    Route::get('/edit/{id}', [SupplierController::class, 'edit']);
-    Route::put('/update/{id}', [SupplierController::class, 'update']);
-    Route::delete('/destroy/{id}', [SupplierController::class, 'destroy']);
+Route::group(['prefix' => 'suppliers'], function () {
+    Route::get('/',[SupplierController::class, 'index']);
+    Route::post('/list',[SupplierController::class, 'list']);
+    Route::get('/create',[SupplierController::class, 'create']);
+    Route::post('/',[SupplierController::class, 'store']);
+    Route::get('/{id}',[SupplierController::class, 'show']);
+    Route::get('/{id}/edit',[SupplierController::class, 'edit']);
+    Route::put('/{id}',[SupplierController::class, 'update']);
+    Route::delete('/{id}',[SupplierController::class, 'destroy']);
 });
 
-Route::post('/users/data', [UserController::class, 'getUsers'])->name('users.data');
 
