@@ -11,74 +11,103 @@ class BarangSeeder extends Seeder
     {
 
         $data = [
-            'Food & Beverage' => [
-                [
-                    'nama_product' => 'Nasi Goreng Spesial',
-                    'stok'         => 100,
-                    'harga'        => 15000,
-                ],
-                [
-                    'nama_product' => 'Mie Ayam',
-                    'stok'         => 80,
-                    'harga'        => 12000,
-                ],
-                [
-                    'nama_product' => 'Es Teh Manis',
-                    'stok'         => 150,
-                    'harga'        => 5000,
-                ],
+            [
+                'barang_id'   => 1,
+                'barang_kode' => 'BRG001',
+                'barang_nama' => 'Nasi Goreng Spesial',
+                'harga_beli'  => 15000,
+                'harga_jual'  => 20000,
+                'kategori_id' => 1, // Food & Beverage
             ],
-            'Beauty & Health' => [
-                [
-                    'nama_product' => 'Sabun Mandi',
-                    'stok'         => 200,
-                    'harga'        => 8000,
-                ],
-                [
-                    'nama_product' => 'Shampoo',
-                    'stok'         => 120,
-                    'harga'        => 15000,
-                ],
-                [
-                    'nama_product' => 'Pasta Gigi',
-                    'stok'         => 180,
-                    'harga'        => 10000,
-                ],
+            [
+                'barang_id'   => 2,
+                'barang_kode' => 'BRG002',
+                'barang_nama' => 'Mie Ayam',
+                'harga_beli'  => 12000,
+                'harga_jual'  => 16000,
+                'kategori_id' => 1, // Food & Beverage
             ],
-            'Home Care' => [
-                [
-                    'nama_product' => 'Detergen',
-                    'stok'         => 100,
-                    'harga'        => 20000,
-                ],
-                [
-                    'nama_product' => 'Pembersih Lantai',
-                    'stok'         => 80,
-                    'harga'        => 25000,
-                ],
-                [
-                    'nama_product' => 'Pewangi Ruangan',
-                    'stok'         => 150,
-                    'harga'        => 12000,
-                ],
+            [
+                'barang_id'   => 3,
+                'barang_kode' => 'BRG003',
+                'barang_nama' => 'Es Teh Manis',
+                'harga_beli'  => 5000,
+                'harga_jual'  => 7000,
+                'kategori_id' => 1, // Food & Beverage
             ],
-            'Baby & Kids' => [
-                [
-                    'nama_product' => 'Popok Bayi',
-                    'stok'         => 200,
-                    'harga'        => 30000,
-                ],
-                [
-                    'nama_product' => 'Susu Formula',
-                    'stok'         => 100,
-                    'harga'        => 50000,
-                ],
-                [
-                    'nama_product' => 'Mainan Edukatif',
-                    'stok'         => 80,
-                    'harga'        => 40000,
-                ],
+            [
+                'barang_id'   => 4,
+                'barang_kode' => 'BRG004',
+                'barang_nama' => 'Sabun Mandi',
+                'harga_beli'  => 8000,
+                'harga_jual'  => 12000,
+                'kategori_id' => 2, // Beauty & Health
             ],
+            [
+                'barang_id'   => 5,
+                'barang_kode' => 'BRG005',
+                'barang_nama' => 'Shampoo',
+                'harga_beli'  => 15000,
+                'harga_jual'  => 20000,
+                'kategori_id' => 2, // Beauty & Health
+            ],
+            [
+                'barang_id'   => 6,
+                'barang_kode' => 'BRG006',
+                'barang_nama' => 'Pasta Gigi',
+                'harga_beli'  => 10000,
+                'harga_jual'  => 15000,
+                'kategori_id' => 2, // Beauty & Health
+            ],
+            [
+                'barang_id'   => 7,
+                'barang_kode' => 'BRG007',
+                'barang_nama' => 'Detergen',
+                'harga_beli'  => 20000,
+                'harga_jual'  => 25000,
+                'kategori_id' => 3, // Home Care
+            ],
+            [
+                'barang_id'   => 8,
+                'barang_kode' => 'BRG008',
+                'barang_nama' => 'Pembersih Lantai',
+                'harga_beli'  => 25000,
+                'harga_jual'  => 30000,
+                'kategori_id' => 3, // Home Care
+            ],
+            [
+                'barang_id'   => 9,
+                'barang_kode' => 'BRG009',
+                'barang_nama' => 'Pewangi Ruangan',
+                'harga_beli'  => 12000,
+                'harga_jual'  => 15000,
+                'kategori_id' => 3, // Home Care
+            ],  
+            [
+                'barang_id'   => 10,
+                'barang_kode' => 'BRG010',
+                'barang_nama' => 'Popok Bayi',
+                'harga_beli'  => 30000,
+                'harga_jual'  => 40000,
+                'kategori_id' => 4, // Baby & Kids
+            ],
+            [
+                'barang_id'   => 11,
+                'barang_kode' => 'BRG011',
+                'barang_nama' => 'Susu Formula',
+                'harga_beli'  => 50000,
+                'harga_jual'  => 60000,
+                'kategori_id' => 4, // Baby & Kids
+            ],
+            [
+                'barang_id'   => 12,
+                'barang_kode' => 'BRG012',
+                'barang_nama' => 'Mainan Edukatif',
+                'harga_beli'  => 40000,
+                'harga_jual'  => 50000,
+                'kategori_id' => 4, // Baby & Kids
+            ],
+        
         ];
 
         DB::table('m_barang')->insert($data);

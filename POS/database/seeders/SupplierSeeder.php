@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Http\Controllers\SupplierController;
 use Illuminate\Database\Seeder;
-use App\Models\SupplierModel;
+use Illuminate\Support\Facades\DB;
+
 
 class SupplierSeeder extends Seeder
 {
@@ -12,28 +12,38 @@ class SupplierSeeder extends Seeder
     {
         $data = [
             [
-                'nama_supplier' => 'Supplier 1',
-                'alamat' => 'CTGY01',
-                'telepon' => 'Food & Beverage',
+                'supplier_kode' => 'SUP001',
+                'supplier_nama' => 'Supplier A',
+                'alamat' => 'Jl. Merdeka No. 1, Jakarta',
+                'telepon' => '0812345678',
             ],
             [
-                'kategori_id' => 2,
-                'kategori_kode' => 'CTGY02',
-                'kategori_nama' => 'Beauty & Health',
+               'supplier_kode' => 'SUP002',
+                'supplier_nama' => 'Supplier b',
+                'alamat' => 'Jl. Pahlawan No. 5, Surabaya',
+                'telepon' => '0890765834',
             ],
             [
-                'kategori_id' => 3,
-                'kategori_kode' => 'CTGY03',
-                'kategori_nama' => 'Home Care',
+              'supplier_kode' => 'SUP003',
+                'supplier_nama' => 'Supplier C',
+                'alamat' => 'Jl. Raya No. 10, Bandung',
+                'telepon'       => null,
             ],
             [
-                'kategori_id' => 4,
-                'kategori_kode' => 'CTGY04',
-                'kategori_nama' => 'Baby & Kids',
+              'supplier_kode' => 'SUP004',
+                'supplier_nama' => 'Supplier D',
+                'alamat' => 'Jl. Sejahtera No. 8, Yogyakarta',
+                'telepon' => '0800708453',
             ],
+            [
+                'supplier_kode' => 'SUP005',
+                  'supplier_nama' => 'Supplier E',
+                  'alamat' => 'Jl. Sentosa No. 3, Bali',
+                  'telepon'       => null,
+              ],
 
         ];
         
-    //     DB::table('m_kategori')->insert($data);
+        DB::table('m_supplier')->insert($data);
     }
 }
