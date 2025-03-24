@@ -34,6 +34,6 @@ class SupplierSeeder extends Seeder
 
         ];
         
-        DB::table('m_kategori')->insert($data);
+    //     DB::table('m_kategori')->insert($data);
     }
 }
