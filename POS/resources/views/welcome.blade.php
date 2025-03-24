@@ -1,12 +1,10 @@
-@extends('layouts.app') <!-- Menggunakan layout utama -->
+<html>
+    <head>
+        <title>HOMEPAGE</title>
+    </head>
+    <body>
+        <h1>Welcome To The Hompage</h1>
+    </body>
+</html>
 
-@section('title', 'Homepage') <!-- Mengisi bagian title -->
 
-@section('content')
-    <div class="text-center">
-        <h1>Welcome to POS System</h1>
-        <p>Ini adalah halaman utama sistem POS.</p>
-    </div>
-@endsection
-
-    
