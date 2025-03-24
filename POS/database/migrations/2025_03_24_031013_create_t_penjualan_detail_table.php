@@ -9,19 +9,17 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('t_penjualan_detail', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('t_penjualan_id');
-            $table->unsignedBigInteger('m_barang_id');
-            $table->integer('qty')->default(1);
-            $table->decimal('harga', 10, 2);
-            $table->decimal('subtotal', 15, 2);
+            $table->id('detail_id');
+            $table->integer('harga');
+            $table->integer('jumlah');
             $table->timestamps();
-
-            $table->foreign('t_penjualan_id')->references('id')->on('t_penjualan')->onDelete('cascade');
-            $table->foreign('m_barang_id')->references('id')->on('m_barang')->onDelete('cascade');
+            $table->unsignedBigInteger('penjualan_id')->index();
+            $table->unsignedBigInteger('barang_id')->index();
+            $table->foreign('penjualan_id')->references('penjualan_id')->on('t_penjualan');
+            $table->foreign('barang_id')->references('barang_id')->on('m_barang');
         });
     }
 

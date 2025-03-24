@@ -9,18 +9,18 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('m_user', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama');
-            $table->string('username')->unique();
-            $table->string('email')->unique();
+            $table->id('user_id');
+            $table->unsignedBigInteger('level_id')->index();    //indexing untuk foreign key
+            $table->string('username', 20)->unique();           //unique untuk memastikan tidak ada username yang sama
+            $table->string('nama', 100);
             $table->string('password');
-            $table->unsignedBigInteger('m_level_id');
             $table->timestamps();
-
-            $table->foreign('m_level_id')->references('id')->on('m_level')->onDelete('cascade');
+            
+            //mendefinisikan foreign key pada kolom level_id mengacu pada kolom level_id di table m_level
+            $table->foreign('level_id')->references('level_id')->on('m_level');
         });
     }
 

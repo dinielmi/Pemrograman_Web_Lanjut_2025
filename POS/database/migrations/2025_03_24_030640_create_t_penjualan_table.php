@@ -9,17 +9,17 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('t_penjualan', function (Blueprint $table) {
-            $table->id();
-            $table->string('no_penjualan')->unique();
-            $table->date('tanggal');
-            $table->unsignedBigInteger('m_user_id')->nullable();
-            $table->decimal('total', 15, 2)->default(0);
-            $table->timestamps();
+            $table->id('penjualan_id');
+            $table->string('pembeli', 50);
 
-            $table->foreign('m_user_id')->references('id')->on('m_user')->onDelete('set null');
+            $table->string('penjualan_kode', 20)->unique();
+            $table->dateTime('penjualan_tanggal');
+            $table->timestamps();
+            $table->unsignedBigInteger('user_id')->index();
+            $table->foreign('user_id')->references('user_id')->on('m_user');
         });
     }
 
