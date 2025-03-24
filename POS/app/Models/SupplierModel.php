@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MSupplier extends Model
+class SupplierModel extends Model
 {
     protected $table = 'm_supplier';
-    protected $fillable = ['nama_supplier', 'alamat', 'telepon'];
+    protected $fillable = ['supplier_kode', 'supplier_nama', 'alamat', 'telepon'];
 }

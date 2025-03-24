@@ -2,24 +2,30 @@
 
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class MUser extends Authenticatable
+class UserModel extends Model
 {
-    protected $table = 'm_user';
+    // public function level() : HasOne {
+    //     return $this->hasOne(LevelModel::class);
+    // }
 
-    protected $fillable = [
-        'nama', 'username', 'email', 'password', 'm_level_id'
-    ];
+    use HasFactory;
 
-    // Set password dengan bcrypt secara otomatis saat disimpan
-    public function setPasswordAttribute($value)
-    {
-         $this->attributes['password'] = bcrypt($value);
+    protected $table = 'm_user'; // Mendefinisikan nama tabel yang digunakan oleh model ini
+    protected $primaryKey = 'user_id'; // Mendefinisikan primary key dari tabel yang digunakan
+    /**
+     * The atributes that are mass assignable
+     * 
+     * @var array
+     */
+
+    public function level() : BelongsTo{
+        return $this->belongsTo(LevelModel::class, 'level_id', 'level_id');
     }
 
-    public function level()
-    {
-         return $this->belongsTo(MLevel::class, 'm_level_id');
-    }
+
 }
