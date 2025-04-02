@@ -15,7 +15,7 @@
                 </div>
                 <div class="form-group">
                     <label>Nama Level</label>
-                    <input value="" type="text" name="level_name" id="level_nama" class="form-control" required>
+                    <input value="" type="text" name="level_nama" id="level_nama" class="form-control" required>
                     <small id="error-level_nama" class="error-text form-text text-danger"></small>
                 </div>
             </div> 
@@ -67,6 +67,13 @@
                                 text: response.message
                             });
                         }
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Kesalahan Server',
+                            text: xhr.responseText
+                        });
                     }
                 });
                 return false;
@@ -83,6 +90,5 @@
                 $(element).removeClass('is-invalid');
             }
         });
-        
     });
 </script>

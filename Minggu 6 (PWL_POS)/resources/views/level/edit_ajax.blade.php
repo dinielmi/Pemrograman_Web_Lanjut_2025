@@ -36,9 +36,9 @@
                      </div>
                      <div class="form-group">
                          <label>Nama Level</label>
-                         <input value="{{ $level->level_name }}" type="text" name="level_name" id="level_name" class="form-control"
+                         <input value="{{ $level->level_nama }}" type="text" name="level_nama" id="level_nama" class="form-control"
                              required>
-                         <small id="error-level_name" class="error-text form-text text-danger"></small>
+                         <small id="error-level_nama" class="error-text form-text text-danger"></small>
                      </div> 
                  </div>
                  <div class="modal-footer">
@@ -57,7 +57,7 @@
                          minlength: 1,
                          maxlength: 5
                      },
-                     level_name: {
+                     level_nama: {
                          required: true,
                          minlength: 5,
                          maxlength: 100
