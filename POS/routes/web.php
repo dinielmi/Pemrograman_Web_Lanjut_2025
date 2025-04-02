@@ -7,6 +7,7 @@ use App\Http\Controllers\LevelController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PenjualanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -107,4 +108,15 @@ Route::group(['prefix' => 'barang'], function () {
     Route::get('/{id}/edit',[BarangController::class, 'edit']);
     Route::put('/{id}',[BarangController::class, 'update']);
     Route::delete('/{id}',[BarangController::class, 'destroy']);
+});
+
+Route::group(['prefix' => 'penjualan'], function () {
+    Route::get('/', [PenjualanController::class, 'index']);
+    Route::post('/list', [PenjualanController::class, 'list']);
+    Route::get('/create', [PenjualanController::class, 'create']);
+    Route::post('/', [PenjualanController::class, 'store']);
+    Route::get('/{id}', [PenjualanController::class, 'show']);
+    Route::get('/{id}/edit', [PenjualanController::class, 'edit']);
+    Route::put('/{id}', [PenjualanController::class, 'update']);
+    Route::delete('/{id}', [PenjualanController::class, 'destroy']);
 });
