@@ -2,21 +2,24 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Barangmodel extends Model
+class BarangModel extends Model
 {
+    use HasFactory;
     protected $table = 'm_barang';
-    protected $fillable = ['nama_barang', 'stok', 'harga', 'm_kategori_id', 'm_supplier_id'];
+    protected $primaryKey = 'barang_id';
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['kategori_id', 'barang_kode', 'barang_nama', 'harga_beli', 'harga_jual'];
 
-    public function kategori()
+    public function kategori(): BelongsTo 
     {
-        return $this->belongsTo(KategoriModel::class, 'm_kategori_id');
-    }
-
-    public function supplier()
-    {
-        return $this->belongsTo(SupplierModel::class, 'm_supplier_id');
+        return $this->belongsTo(KategoriModel::class, 'kategori_id', 'kategori_id');
     }
 }
-    

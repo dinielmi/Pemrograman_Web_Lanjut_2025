@@ -2,18 +2,18 @@
 
 namespace App\Models;
 
-use Database\Seeders\StokSeeder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class SupplierModel extends Model
 {
+    use HasFactory;
     protected $table = 'm_supplier';
-
-    protected $fillable = ['supplier_kode', 'supplier_nama', 'alamat', 'telepon'];
-
-    public function stok()
-    {
-        return $this->hasMany(StokSeeder::class, 'supplier_id');
-    }
-
+    protected $primaryKey = 'supplier_id';
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['supplier_kode', 'supplier_nama', 'alamat'];
 }
