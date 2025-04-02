@@ -58,11 +58,25 @@
             <p>Stok Barang</p>
           </a>
         </li>
-        <li class="nav-item">
-          <a href="{{ url('/barang') }}" class="nav-link {{ ($activeMenu == 'penjualan')? 'active' : '' }} ">
-            <i class="nav-icon fas fa-cash-register"></i>
-            <p>Transaksi Penjualan</p>
-          </a>
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link {{ ($activeMenu == 'penjualan' || $activeMenu == 'penjualan_detail') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-cash-register"></i>        
+            <p>Transaksi Penjualan<i class="right fas fa-angle-left"></i></p>
+         </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="{{ url('/penjualan') }}" class="nav-link {{ ($activeMenu == 'penjualan') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Penjualan</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ url('/penjualan_detail') }}" class="nav-link {{ ($activeMenu == 'penjualan_detail') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Penjualan Detail</p>
+                </a>
+            </li>
+        </ul>
         </li>
       </ul>
     </nav>
