@@ -6,8 +6,16 @@ use Illuminate\Http\Request;
 
 class HomepageController extends Controller
 {
-    public function index(){
-        return view('welcome');
+    public function index()
+    {
+        $breadcrumb = (object) [
+            'title' => 'Selamat Datang',
+            'list' => ['Home', 'Welcome']
+        ];
+        
+        $activeMenu = 'dashboard';
+        
+        return view('welcome', ['breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu]);
     }
 }
 
