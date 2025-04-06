@@ -15,40 +15,60 @@
         @if (session('error'))
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
-        @if (isset($penjualan) && $penjualan->isNotEmpty())
-            <table class="table table-bordered table-hover table-sm" id="table_penjualan">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Kode Penjualan</th>
-                        <th>Pembeli</th>
-                        <th>Tanggal</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($penjualan as $item)
-                    <tr>
-                        <td>{{ $item->penjualan_id }}</td>
-                        <td>{{ $item->penjualan_kode }}</td>
-                        <td>{{ $item->pembeli }}</td>
-                        <td>{{ $item->penjualan_tanggal }}</td>
-                        <td>
-                            <a href="{{ url('penjualan/'.$item->penjualan_id) }}" class="btn btn-sm btn-info">Detail</a>
-                            <a href="{{ url('penjualan/'.$item->penjualan_id.'/edit') }}" class="btn btn-sm btn-warning">Edit</a>
-                            <form action="{{ url('penjualan/'.$item->penjualan_id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                {!! method_field('DELETE') !!}
-                                <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
-                            </form>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        @else
-            <div class="alert alert-warning">Data penjualan tidak tersedia.</div>
-        @endif
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group row">
+                    <label for="filter_pembeli" class="col-1 control-label col-form-label">Filter:</label>
+                    <div class="col-3">
+                        <input type="text" name="filter_pembeli" id="filter_pembeli" class="form-control" placeholder="Nama Pembeli">
+                        <small class="form-text text-muted">Nama Pembeli</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Tabel --}}
+        <table class="table table-bordered table-hover table-sm" id="table_penjualan">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Kode Penjualan</th>
+                    <th>Pembeli</th>
+                    <th>Tanggal</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+        </table>
     </div>
 </div>
 @endsection
+
+@push('js')
+<script>
+    $(document).ready(function() {
+        let table = $('#table_penjualan').DataTable({
+            serverSide: true,
+            processing: true,
+            ajax: {
+                url: "{{ url('penjualan/list') }}",
+                type: 'POST',
+                data: function(d) {
+                    d.pembeli = $('#filter_pembeli').val();
+                }
+            },
+            columns: [
+                { data: 'penjualan_id', name: 'penjualan_id' },
+                { data: 'penjualan_kode', name: 'penjualan_kode' },
+                { data: 'pembeli', name: 'pembeli' },
+                { data: 'penjualan_tanggal', name: 'penjualan_tanggal' },
+                { data: 'aksi', name: 'aksi', orderable: false, searchable: false },
+            ]
+        });
+
+        $('#filter_pembeli').on('keyup', function() {
+            table.ajax.reload();
+        });
+    });
+</script>
+@endpush
