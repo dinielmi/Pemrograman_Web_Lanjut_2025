@@ -12,17 +12,12 @@ class PenjualanModel extends Model
 
     protected $table = 't_penjualan';
     protected $primaryKey = 'penjualan_id';
+    public $timestamps = false;
 
     protected $fillable = [
         'pembeli',
         'penjualan_kode',
         'penjualan_tanggal',
-        'user_id',
     ];
 
-    // Relasi ke tabel m_user
-    public function user()
-    {
-        return $this->belongsTo(UserModel::class, 'user_id', 'user_id');
-    }
 }

@@ -30,9 +30,10 @@ class PenjualanController extends Controller
             'penjualan' => $penjualan // Kirim data ke view
         ]);
     }
+    
     public function list(Request $request)
     {
-        $penjualan = PenjualanModel::select('penjualan_id', 'tanggal', 'total');
+        $penjualan = PenjualanModel::select('penjualan_id', 'penjualan_kode', 'pembeli', 'penjualan_tanggal');
 
         return DataTables::of($penjualan)
             ->addIndexColumn()
@@ -48,6 +49,7 @@ class PenjualanController extends Controller
             ->rawColumns(['aksi'])
             ->make(true);
     }
+
 
     public function create()
     {
@@ -82,6 +84,8 @@ class PenjualanController extends Controller
     
         return redirect('/penjualan')->with('success', 'Data penjualan berhasil disimpan');
     }
+
+    
     public function show(string $id)
     {
         $penjualan = PenjualanModel::find($id);
