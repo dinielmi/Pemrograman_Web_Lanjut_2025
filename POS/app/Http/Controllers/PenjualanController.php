@@ -12,12 +12,12 @@ class PenjualanController extends Controller
     public function index()
     {
         $breadcrumb = (object) [
-            'title' => 'Daftar Penjualan',
+            'title' => 'Daftar Data Penjualan',
             'list' => ['Home', 'Penjualan']
         ];
     
         $page = (object) [
-            'title' => 'Daftar transaksi penjualan'
+            'title' => 'Daftar transaksi Penjualan'
         ];
     
         $activeMenu = 'penjualan';
@@ -96,7 +96,7 @@ class PenjualanController extends Controller
         ];
 
         $page = (object) [
-            'title' => 'Detail transaksi penjualan'
+            'title' => 'Detail Data penjualan'
         ];
 
         $activeMenu = 'penjualan';

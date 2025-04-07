@@ -36,10 +36,17 @@ class PenjualanDetailController extends Controller
 
     public function list(Request $request)
     {
-        $detail = PenjualanDetailModel::select('penjualan_detail_id', 'penjualan_id', 'barang_id', 'jumlah', 'harga');
-
-        return DataTables::of($detail)
+        $query = PenjualanDetailModel::query();
+        
+        if ($request->has('pembeli') && $request->pembeli != '') {
+            $query->where('pembeli_id', $request->pembeli); // Sesuaikan dengan kolom yang relevan
+        }
+    
+        return DataTables::of($query)
             ->addIndexColumn()
+            ->addColumn('total', function ($detail) {
+                return number_format($detail->jumlah * $detail->harga);
+            })
             ->addColumn('aksi', function ($detail) {
                 $btn = '<a href="' . url('/penjualan_detail/' . $detail->penjualan_detail_id) . '" class="btn btn-info btn-sm">Detail</a> ';
                 $btn .= '<a href="' . url('/penjualan_detail/' . $detail->penjualan_detail_id . '/edit') . '" class="btn btn-warning btn-sm">Edit</a> ';
@@ -104,20 +111,20 @@ class PenjualanDetailController extends Controller
 
     public function edit(string $id)
     {
-        $penjualan = PenjualanModel::findOrFail($id);
+        $detail = PenjualanDetailModel::findOrFail($id);
     
         $breadcrumb = (object) [
-            'title' => 'Edit Penjualan',
+            'title' => 'Edit Detail Penjualan',
             'list'  => ['Home', 'Penjualan', 'Edit']
         ];
     
         $page = (object) [
-            'title' => 'Edit transaksi penjualan'
+            'title' => 'Edit Detail Penjualan'
         ];
     
         $activeMenu = 'penjualan';
     
-        return view('penjualan.edit', compact('breadcrumb', 'page', 'penjualan', 'activeMenu'));
+        return view('penjualan_detail.edit', compact('breadcrumb', 'page', 'detail', 'activeMenu'));
     }
     
     

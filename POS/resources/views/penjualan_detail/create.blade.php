@@ -6,41 +6,37 @@
         <h4>{{ $page->title }}</h4>
     </div>
     <div class="card-body">
-        <form method="POST" action="{{ url('penjualan_detail') }}">
+        <form method="
+        POST" action="{{ url('penjualan_detail') }}">
             @csrf
-            <div class="form-group mb-3">
-                <label for="penjualan_id">Penjualan</label>
-                <select name="penjualan_id" id="penjualan_id" class="form-control">
-                    <option value="">-- Pilih Penjualan --</option>
-                    @foreach ($penjualans as $p)
-                        <option value="{{ $p->penjualan_id }}">{{ $p->penjualan_kode }}</option>
-                    @endforeach
-                </select>
+
+            <div class="form-group row">
+                <label class="col-2 control-label col-form-label">ID Penjualan</label>
+                <div class="col-10">
+                    <input type="text" class="form-control" name="penjualan_kode" value="{{ old('penjualan_kode') }}" required>
+                </div>
             </div>
-        
-            <div class="form-group mb-3">
-                <label for="barang_id">Barang</label>
-                <select name="barang_id" id="barang_id" class="form-control">
-                    <option value="">-- Pilih Barang --</option>
-                    @foreach ($barangs as $b)
-                        <option value="{{ $b->barang_id }}">{{ $b->nama }}</option>
-                    @endforeach
-                </select>
+            <div class="form-group row">
+                <label class="col-2 control-label col-form-label">Barang ID</label>
+                <div class="col-10">
+                    <input type="text" class="form-control" name="pembeli" value="{{ old('pembeli') }}" required>
+                </div>
             </div>
-        
-            <div class="form-group mb-3">
-                <label for="jumlah">Jumlah</label>
-                <input type="number" name="jumlah" id="jumlah" class="form-control" placeholder="Masukkan jumlah">
+            <div class="form-group row">
+                <label class="col-2 control-label col-form-label">Jumlah</label>
+                <div class="col-10">
+                    <input type="text" class="form-control" name="pembeli" value="{{ old('pembeli') }}" required>
+                </div>
             </div>
-        
-            <div class="form-group mb-3">
-                <label for="harga">Harga</label>
-                <input type="number" name="harga" id="harga" class="form-control" placeholder="Masukkan harga satuan">
+            <div class="form-group row">
+                <label class="col-2 control-label col-form-label">Harga</label>
+                <div class="col-10">
+                    <input type="text" class="form-control" name="pembeli" value="{{ old('pembeli') }}" required>
+                </div>
             </div>
-        
-            <button type="submit" class="btn btn-primary">Simpan</button>
+            <button type="submit" class="btn btn-success">Simpan</button>
+            <a href="{{ url('penjualan_detail') }}" class="btn btn-secondary">Kembali</a>
         </form>
-        
     </div>
 </div>
 @endsection

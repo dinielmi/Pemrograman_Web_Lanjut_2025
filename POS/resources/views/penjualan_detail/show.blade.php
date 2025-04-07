@@ -6,6 +6,12 @@
         <h4>{{ $page->title }}</h4>
     </div>
     <div class="card-body">
+        @empty($detail)
+        <div class="alert alert-danger alert-dismissible">
+            <h5><i class="icon fas fa-ban"></i> Kesalahan!</h5>
+            Data yang Anda cari tidak ditemukan.
+        </div>
+    @else
         <dl class="row">
             <dt class="col-sm-3">ID Penjualan</dt>
             <dd class="col-sm-9">{{ $detail->penjualan_id }}</dd>
@@ -22,6 +28,7 @@
             <dt class="col-sm-3">Total</dt>
             <dd class="col-sm-9">{{ number_format($detail->jumlah * $detail->harga) }}</dd>
         </dl>
+        @endempty
         <a href="{{ url('penjualan_detail') }}" class="btn btn-secondary">Kembali</a>
     </div>
 </div>
