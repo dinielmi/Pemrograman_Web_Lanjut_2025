@@ -41,3 +41,32 @@
     </div>
 </div>
 @endsection
+
+
+<div class="form-group row">
+    <label class="col-2 control-label col-form-label">ID Penjualan</label>
+    <div class="col-10">
+        <input type="text" class="form-control" name="penjualan_kode" value="{{ old('penjualan_kode', $penjualan->penjualan_kode) }}" required>
+    </div>
+</div>
+
+<div class="form-group row">
+    <label class="col-2 control-label col-form-label">Barang ID</label>
+    <div class="col-10">
+        <input type="text" class="form-control" name="pembeli" value="{{ old('pembeli', $penjualan->pembeli) }}" required>
+    </div>
+</div>
+
+<div class="form-group row">
+    <label class="col-2 control-label col-form-label">Tanggal Penjualan</label>
+    <div class="col-10">
+        <input type="datetime-local" class="form-control" name="penjualan_tanggal" value="{{ old('penjualan_tanggal', $penjualan->penjualan_tanggal) }}" required>
+    </div>
+</div>
+
+<div class="form-group row">
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Simpan</button>
+        <a href="{{ url('penjualan') }}" class="btn btn-secondary">Kembali</a>
+    </div>
+</div>

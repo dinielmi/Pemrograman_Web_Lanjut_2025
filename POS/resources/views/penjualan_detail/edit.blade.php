@@ -13,27 +13,31 @@
             <div class="form-group row">
                 <label class="col-2 control-label col-form-label">ID Penjualan</label>
                 <div class="col-10">
-                    <input type="text" class="form-control" name="penjualan_kode" value="{{ old('penjualan_kode') }}" required>
+                    <input type="text" class="form-control" name="penjualan_id" value="{{ $detail->penjualan_id }}" required>
                 </div>
             </div>
+
             <div class="form-group row">
-                <label class="col-2 control-label col-form-label">Barang ID</label>
+                <label class="col-2 control-label col-form-label">ID Barang</label>
                 <div class="col-10">
-                    <input type="text" class="form-control" name="pembeli" value="{{ old('pembeli') }}" required>
+                    <input type="text" class="form-control" name="barang_id" value="{{ $detail->barang_id }}" required>
                 </div>
             </div>
+
             <div class="form-group row">
                 <label class="col-2 control-label col-form-label">Jumlah</label>
                 <div class="col-10">
-                    <input type="text" class="form-control" name="pembeli" value="{{ old('pembeli') }}" required>
+                    <input type="number" class="form-control" name="jumlah" value="{{ $detail->jumlah }}" required>
                 </div>
             </div>
+
             <div class="form-group row">
                 <label class="col-2 control-label col-form-label">Harga</label>
                 <div class="col-10">
-                    <input type="text" class="form-control" name="pembeli" value="{{ old('pembeli') }}" required>
+                    <input type="number" class="form-control" name="harga" value="{{ $detail->harga }}" required>
                 </div>
             </div>
+
             <div class="form-group row">
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">Simpan</button>

@@ -94,12 +94,15 @@
                 { data: 'total', name: 'total' },
                 { data: 'aksi', name: 'aksi', orderable: false, searchable: false }
             ],
+        });
+        $('.table').DataTable({
             responsive: true,
             pageLength: 10,
             language: {
                 url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/id.json'
+            }
         });
-        
+        $('input[name="search"]').focus();        
     });
 </script>
 @endpush --}}
