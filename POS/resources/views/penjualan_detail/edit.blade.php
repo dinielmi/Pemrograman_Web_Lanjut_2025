@@ -34,9 +34,9 @@
             <div class="form-group row">
                 <label class="col-2 control-label col-form-label">Harga</label>
                 <div class="col-10">
-                    <input type="number" class="form-control" name="harga" value="{{ $detail->harga }}" required>
+                    <input type="number" class="form-control" name="harga" value="{{ $detail->harga }}" required autocomplete="off">
                 </div>
-            </div>
+            </div>            
 
             <div class="form-group row">
                 <div class="col-12">
