@@ -7,29 +7,39 @@
     </div>
     <div class="card-body">
         @empty($detail)
-        <div class="alert alert-danger alert-dismissible">
-            <h5><i class="icon fas fa-ban"></i> Kesalahan!</h5>
-            Data yang Anda cari tidak ditemukan.
-        </div>
-    @else
-        <dl class="row">
-            <dt class="col-sm-3">ID Penjualan</dt>
-            <dd class="col-sm-9">{{ $detail->penjualan_id }}</dd>
-
-            <dt class="col-sm-3">ID Barang ID</dt>
-            <dd class="col-sm-9">{{ $detail->barang_id }}</dd>
-
-            <dt class="col-sm-3">Jumlah</dt>
-            <dd class="col-sm-9">{{ $detail->jumlah }}</dd>
-
-            <dt class="col-sm-3">Harga</dt>
-            <dd class="col-sm-9">{{ number_format($detail->harga) }}</dd>
-
-            <dt class="col-sm-3">Total</dt>
-            <dd class="col-sm-9">{{ number_format($detail->jumlah * $detail->harga) }}</dd>
-        </dl>
+            <div class="alert alert-danger alert-dismissible">
+                <h5><i class="icon fas fa-ban"></i> Kesalahan!</h5>
+                Data yang Anda cari tidak ditemukan.
+            </div>
+        @else
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover table-sm mb-0">
+                    <tbody>
+                        <tr>
+                            <th style="width: 30%;">ID Penjualan</th>
+                            <td>{{ $detail->penjualan_id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Barang</th>
+                            <td>{{ $detail->barang->barang_nama ?? $detail->barang_id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Jumlah</th>
+                            <td>{{ $detail->jumlah }}</td>
+                        </tr>
+                        <tr>
+                            <th>Harga</th>
+                            <td>{{ number_format($detail->harga) }}</td>
+                        </tr>
+                        <tr>
+                            <th>Total</th>
+                            <td>{{ number_format($detail->jumlah * $detail->harga) }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         @endempty
-        <a href="{{ url('penjualan_detail') }}" class="btn btn-secondary">Kembali</a>
+        <a href="{{ url('penjualan_detail') }}" class="btn btn-secondary mt-3">Kembali</a>
     </div>
 </div>
 @endsection

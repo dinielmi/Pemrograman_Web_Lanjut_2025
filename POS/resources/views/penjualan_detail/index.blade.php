@@ -32,7 +32,8 @@
             </div>
         </div>
 
-        <table class="table table-bordered table-hover table-sm" id="table_penjualan_detail">
+        <table class="table table-bordered table-hover table-sm table-striped" id="table_penjualan_detail">
+
             <thead>
                 <tr>
                     <th>No</th>
@@ -54,8 +55,9 @@
                     <td>{{ number_format($item->harga) }}</td>
                     <td>{{ number_format($item->jumlah * $item->harga) }}</td>
                     <td>
-                        <a href="{{ url('penjualan_detail/' . $item->penjualan_detail_id) }}" class="btn btn-sm btn-info">Detail</a>
-                        <a href="{{ url('penjualan_detail/' . $item->penjualan_detail_id . '/edit') }}" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="{{ url('penjualan_detail/'.$item->detail_id) }}" class="btn btn-sm btn-info">Detail</a>
+                        <a href="{{ url('penjualan_detail/'.$item->detail_id.'/edit') }}" class="btn btn-sm btn-warning">Edit</a>
+
                         <form action="{{ url('penjualan_detail/' . $item->penjualan_detail_id) }}" method="POST" style="display:inline-block;">
                             @csrf
                             @method('DELETE')
