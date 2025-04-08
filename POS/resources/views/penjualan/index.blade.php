@@ -29,7 +29,7 @@
         </div>
 
         {{-- Tabel --}}
-        <table class="table table-bordered table-hover table-sm" id="table_penjualan">
+        <table class="table table-bordered table-hover table-sm table-striped" id="table_penjualan">
             <thead>
                 <tr>
                     <th>ID</th>
