@@ -31,7 +31,7 @@
                 </div>
             </div>
         </div>
-        <table class="table table-bordered table-hover table-sm" id="table_barang">
+        <table class="table table-bordered table-hover table-sm table-striped" id="table_barang">
             <thead>
                 <tr>
                     <th>ID</th>
