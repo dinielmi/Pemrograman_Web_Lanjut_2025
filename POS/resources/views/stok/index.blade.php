@@ -30,7 +30,7 @@
         </div>    
 
         {{-- Tabel --}}
-        <table class="table table-bordered table-hover table-sm" id="table_stok">
+        <table class="table table-bordered table-hover table-sm table-striped" id="table_stok">
             <thead>
                 <tr>
                     <th>No</th>
