@@ -15,7 +15,7 @@
         @if (session('error'))
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
-        <table class="table table-bordered table-hover table-sm" id="table_supplier">
+        <table class="table table-bordered table-hover table-sm table-striped" id="table_supplier">
             <thead>
                 <tr>
                     <th>ID</th>
