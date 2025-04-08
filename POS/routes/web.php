@@ -9,6 +9,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\PenjualanDetailController;
+use App\Http\Controllers\StokController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -134,4 +135,16 @@ Route::prefix('penjualan_detail')->group(function () {
     Route::put('/{id}', [PenjualanDetailController::class, 'update']);
     Route::delete('/{id}', [PenjualanDetailController::class, 'destroy']);
 });
+
+Route::prefix('stok')->group(function () {
+    Route::get('/list', [StokController::class, 'list'])->name('stok.list'); 
+    Route::get('/', [StokController::class, 'index'])->name('stok.index');
+    Route::get('/create', [StokController::class, 'create'])->name('stok.create');
+    Route::post('/', [StokController::class, 'store'])->name('stok.store');
+    Route::get('/{id}', [StokController::class, 'show'])->name('stok.show');
+    Route::get('/{id}/edit', [StokController::class, 'edit'])->name('stok.edit');
+    Route::put('/{id}', [StokController::class, 'update'])->name('stok.update');
+    Route::delete('/{id}', [StokController::class, 'destroy'])->name('stok.destroy');
+});
+
 
