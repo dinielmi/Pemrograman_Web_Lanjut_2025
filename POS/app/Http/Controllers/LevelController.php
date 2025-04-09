@@ -235,4 +235,23 @@ class LevelController extends Controller
         return redirect('/');
     }
 
+    public function confirm_ajax(string $id)
+    {
+        return view('level.confirm_ajax', ['level' => LevelModel::find($id)]);
+    }
+
+    // Menghapus data level
+    public function delete_ajax(Request $request, string $id)
+    {
+        if ($request->ajax()) {
+            $level = LevelModel::find($id);
+            if ($level) {
+                $level->delete();
+                return response()->json(['status' => true, 'message' => 'Data berhasil dihapus']);
+            }
+            return response()->json(['status' => false, 'message' => 'Data tidak ditemukan']);
+        }
+        return redirect('/');
+    }
+
 }   
