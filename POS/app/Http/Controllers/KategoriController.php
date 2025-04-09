@@ -69,7 +69,7 @@ class KategoriController extends Controller
                     <button class="btn btn-danger btn-sm mr-1">Delete</button>
                 </form>
 
-                <button onclick="modalAction(\'' . url("kategori/$row->kategori_id/confirm_ajax") . '\')" class="btn btn-outline-danger btn-sm" title="Delete">
+                <button onclick="modalAction(\'' . url("kategori/$row->kategori_id/delete_ajax") . '\')" class="btn btn-outline-danger btn-sm" title="Delete">
                     <i class="fa fa-trash"></i>
                 </button>
             ';
@@ -257,5 +257,31 @@ class KategoriController extends Controller
         return redirect('/');
     }
 
+    public function confirm_ajax(string $id)
+    {
+        $kategori = KategoriModel::find($id);
+        return view('kategori.confirm_ajax', ['kategori' => $kategori]);
+    }
+
+    public function delete_ajax(Request $request, string $id)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            $kategori = KategoriModel::find($id);
+
+            if ($kategori) {
+                $kategori->delete();
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data berhasil dihapus'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data tidak ditemukan'
+                ]);
+            }
+        }
+        return redirect('/');
+    }
     
 }
