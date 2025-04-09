@@ -69,28 +69,31 @@ class UserController extends Controller
             ->addIndexColumn()
             ->addColumn('aksi', function($row) {
                 return '
-                    <a href="' . url("user/$row->user_id") . '" class="btn btn-info btn-sm mr-1">Detail</a>
-                    <a href="' . url("user/$row->user_id/edit") . '" class="btn btn-warning btn-sm mr-1">Edit</a>
-                    <form method="POST" action="' . url("user/$row->user_id") . '" style="display:inline;" onsubmit="return confirm(\'Yakin hapus data?\')">
-                        ' . csrf_field() . method_field('DELETE') . '
-                        <button class="btn btn-danger btn-sm">Delete</button>
-                    </form>';
+                <a href="' . url("user/$row->user_id") . '" class="btn btn-info btn-sm mr-1">Detail</a>
+                <button onclick="modalAction(\'' . url("user/$row->user_id/show_ajax") . '\')" class="btn btn-outline-info btn-sm mr-1" title="Detail">
+                    <i class="fa fa-eye"></i>
+                </button>
+            
+                <a href="' . url("user/$row->user_id/edit") . '" class="btn btn-warning btn-sm mr-1">Edit</a>
+                <button onclick="modalAction(\'' . url("user/$row->user_id/edit_ajax") . '\')" class="btn btn-outline-warning btn-sm mr-1" title="Edit">
+                    <i class="fa fa-edit"></i>
+                </button>
+            
+                <form method="POST" action="' . url("user/$row->user_id") . '" style="display:inline;" onsubmit="return confirm(\'Yakin hapus data?\')">
+                    ' . csrf_field() . method_field('DELETE') . '
+                    <button class="btn btn-danger btn-sm mr-1">Delete</button>
+                </form>
+            
+                <button onclick="modalAction(\'' . url("user/$row->user_id/delete_ajax") . '\')" class="btn btn-outline-danger btn-sm" title="Delete">
+                    <i class="fa fa-trash"></i>
+                </button>
+            ';
+            
             })
-            ->addColumn('aksi_ajax', function($row) {
-                return '
-                    <button onclick="modalAction(\'' . url("user/$row->user_id/show_ajax") . '\')" class="btn btn-info btn-sm mr-1" title="Detail">
-                        <i class="fa fa-eye"></i>
-                    </button>
-                    <button onclick="modalAction(\'' . url("user/$row->user_id/edit_ajax") . '\')" class="btn btn-warning btn-sm mr-1" title="Edit">
-                        <i class="fa fa-edit"></i>
-                    </button>
-                    <button onclick="modalDeleteAjax(\'' . url("user/$row->user_id/delete_ajax") . '\')" class="btn btn-danger btn-sm" title="Delete">
-                        <i class="fa fa-trash"></i>
-                    </button>';
-            })
-            ->rawColumns(['aksi', 'aksi_ajax'])
+            ->rawColumns(['aksi'])
             ->make(true);
     }
+    
     
 
     // Menampilkan halaman form tambah user

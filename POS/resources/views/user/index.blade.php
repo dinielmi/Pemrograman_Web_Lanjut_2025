@@ -5,11 +5,10 @@
    <div class="card-header">
        <h3 class="card-title">{{ $page->title }}</h3>
        <div class="card-tools">
-           <a class="btn btn-sm btn-primary mt-1" href="{{ url('user/create') }}">Tambah</a>
-           <button onclick="modalAction('{{ url('user/create_ajax') }}')" class="btn btn-sm btn-success mt-1" title="Tambah Ajax">
+        <a class="btn btn-sm btn-success mt-1" href="{{ url('user/create') }}">Tambah</a>
+        <button onclick="modalAction('{{ url('user/create_ajax') }}')" class="btn btn-sm btn-outline-success mt-1" title="Tambah Ajax">
             <i class="fa fa-plus"></i>
-        </button>
-        
+        </button>        
        </div>
    </div>
    <div class="card-body">
@@ -43,7 +42,6 @@
                    <th>Nama</th>
                    <th>Level Pengguna</th>
                    <th>Aksi</th>
-                   <th>Aksi Ajax</th>
                </tr>
            </thead>
        </table>
@@ -65,40 +63,6 @@ function modalAction(url = '') {
         $('#myModal').find("script").each(function() {
             $.globalEval(this.text || this.textContent || this.innerHTML || '');
         });
-    });
-}
-
-function modalDeleteAjax(url) {
-    Swal.fire({
-        title: 'Apakah Anda yakin?',
-        text: "Data akan dihapus secara permanen!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#6c757d',
-        confirmButtonText: 'Ya, hapus!',
-        cancelButtonText: 'Batal'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: url,
-                type: 'DELETE',
-                data: {
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    if (response.status) {
-                        Swal.fire('Berhasil!', response.message, 'success');
-                        dataUser.ajax.reload();
-                    } else {
-                        Swal.fire('Gagal!', response.message, 'error');
-                    }
-                },
-                error: function(xhr) {
-                    Swal.fire('Gagal!', 'Terjadi kesalahan pada server.', 'error');
-                }
-            });
-        }
     });
 }
 
@@ -139,11 +103,6 @@ $(document).ready(function() {
                 orderable: false, 
                 searchable: false
             },
-            {
-                data: "aksi_ajax",
-                orderable: false,
-                searchable: false
-            }
         ]
     });
 
