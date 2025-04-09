@@ -88,6 +88,8 @@ Route::group(['prefix' => 'level'], function () {
         //route ajax
         Route::get('/create_ajax', [LevelController::class, 'create_ajax']);
         Route::post('/ajax', [LevelController::class, 'store_ajax']);
+        Route::get('/{id}/show_ajax', [LevelController::class, 'show_ajax']);
+
         
     Route::get('/{id}',[LevelController::class, 'show']);
     Route::get('/{id}/edit',[LevelController::class, 'edit']);
