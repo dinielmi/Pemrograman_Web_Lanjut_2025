@@ -57,28 +57,41 @@ class UserController extends Controller
     //         ->make(true);
     // }
 
-    public function list(Request $request) 
+    public function list(Request $request)
     {
-        $users = UserModel::select('user_id', 'username', 'nama', 'level_id')
-            ->with('level');
-
-        // Filter data user berdasarkan level_id
+        $data = UserModel::with('level');
+    
         if ($request->level_id) {
-            $users->where('level_id', $request->level_id);
+            $data->where('level_id', $request->level_id);
         }
-
-        return DataTables::of($users)
-            ->addIndexColumn() // menambahkan kolom index / no urut (default nama kolom: DT_RowIndex)
-            ->addColumn('aksi', function ($user) { // menambahkan kolom aksi
-                $btn = '<button onclick="modalAction(\''.url('/user') . '/' . $user->user_id . '/show_ajax' . '\')" class="btn btn-info btn-sm">Detail</button> ';
-                $btn .= '<button onclick="modalAction(\''.url('/user') . '/' . $user->user_id . '/edit_ajax' . '\')" class="btn btn-warning btn-sm">Edit</button> ';
-                $btn .= '<button onclick="modalAction(\''.url('/user') . '/' . $user->user_id . '/delete_ajax' . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
-                
-                return $btn;
+    
+        return datatables()->of($data)
+            ->addIndexColumn()
+            ->addColumn('aksi', function($row) {
+                return '
+                    <a href="' . url("user/$row->user_id") . '" class="btn btn-info btn-sm mr-1">Detail</a>
+                    <a href="' . url("user/$row->user_id/edit") . '" class="btn btn-warning btn-sm mr-1">Edit</a>
+                    <form method="POST" action="' . url("user/$row->user_id") . '" style="display:inline;" onsubmit="return confirm(\'Yakin hapus data?\')">
+                        ' . csrf_field() . method_field('DELETE') . '
+                        <button class="btn btn-danger btn-sm">Delete</button>
+                    </form>';
             })
-            ->rawColumns(['aksi']) // memberitahu bahwa kolom aksi adalah html
+            ->addColumn('aksi_ajax', function($row) {
+                return '
+                    <button onclick="modalAction(\'' . url("user/$row->user_id/show_ajax") . '\')" class="btn btn-info btn-sm mr-1" title="Detail">
+                        <i class="fa fa-eye"></i>
+                    </button>
+                    <button onclick="modalAction(\'' . url("user/$row->user_id/edit_ajax") . '\')" class="btn btn-warning btn-sm mr-1" title="Edit">
+                        <i class="fa fa-edit"></i>
+                    </button>
+                    <button onclick="modalDeleteAjax(\'' . url("user/$row->user_id/delete_ajax") . '\')" class="btn btn-danger btn-sm" title="Delete">
+                        <i class="fa fa-trash"></i>
+                    </button>';
+            })
+            ->rawColumns(['aksi', 'aksi_ajax'])
             ->make(true);
     }
+    
 
     // Menampilkan halaman form tambah user
     public function create()

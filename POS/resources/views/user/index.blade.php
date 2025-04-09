@@ -6,7 +6,10 @@
        <h3 class="card-title">{{ $page->title }}</h3>
        <div class="card-tools">
            <a class="btn btn-sm btn-primary mt-1" href="{{ url('user/create') }}">Tambah</a>
-            <button onclick="modalAction('{{ url('user/create_ajax') }}')" class="btn btn-sm btn-success mt-1">Tambah Ajax</button>
+           <button onclick="modalAction('{{ url('user/create_ajax') }}')" class="btn btn-sm btn-success mt-1" title="Tambah Ajax">
+            <i class="fa fa-plus"></i>
+        </button>
+        
        </div>
    </div>
    <div class="card-body">
@@ -40,6 +43,7 @@
                    <th>Nama</th>
                    <th>Level Pengguna</th>
                    <th>Aksi</th>
+                   <th>Aksi Ajax</th>
                </tr>
            </thead>
        </table>
@@ -58,68 +62,94 @@
 function modalAction(url = '') {
     $('#myModal').load(url, function() {
         $('#myModal').modal('show');
-
-        // Eksekusi ulang semua <script> dalam modal
         $('#myModal').find("script").each(function() {
             $.globalEval(this.text || this.textContent || this.innerHTML || '');
         });
     });
 }
 
-   $(document).ready(function() {
-           dataUser = $('#table_user').DataTable({
-           // serverSide: true, jika ingin menggunakan server side processing
-           // serverSide: true,
-           ajax: {
-               "url": "{{ url('user/list') }}", 
-               "dataType": "json",
-               "type": "POST",
-               "data": function(d) {
-                        d.level_id = $('#level_id').val();
-                      }
-           },
-           columns: [
-               {
-                   // nomor urut dari laravel datatable addIndexColumn()
-                   data: "DT_RowIndex",
-                   className: "text-center", 
-                   orderable: false, 
-                   searchable: false
-               },
-               {
-                   data: "username", 
-                   className: "",
-                   // orderable: true, jika ingin kolom ini bisa diurutkan
-                   orderable: true,
-                   // searchable: true, jika ingin kolom ini bisa dicari
-                   searchable: true
-               },
-               {
-                   data: "nama",
-                   className: "", 
-                   orderable: true, 
-                   searchable: true
-               },
-               {
-                   // mengambil data level hasil dari ORM berelasi
-                   data: "level.level_nama",
-                   className: "", 
-                   orderable: false, 
-                   searchable: false
-               },
-               {
-                   data: "aksi",
-                   className: "", 
-                   orderable: false, 
-                   searchable: false
-               }
-           ]
-       });
+function modalDeleteAjax(url) {
+    Swal.fire({
+        title: 'Apakah Anda yakin?',
+        text: "Data akan dihapus secara permanen!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Ya, hapus!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: url,
+                type: 'DELETE',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if (response.status) {
+                        Swal.fire('Berhasil!', response.message, 'success');
+                        dataUser.ajax.reload();
+                    } else {
+                        Swal.fire('Gagal!', response.message, 'error');
+                    }
+                },
+                error: function(xhr) {
+                    Swal.fire('Gagal!', 'Terjadi kesalahan pada server.', 'error');
+                }
+            });
+        }
+    });
+}
 
-       $('#level_id').on('change', function() {
-            dataUser.ajax.reload();
-        });
+$(document).ready(function() {
+    dataUser = $('#table_user').DataTable({
+        ajax: {
+            url: "{{ url('user/list') }}",
+            dataType: "json",
+            type: "POST",
+            data: function(d) {
+                d.level_id = $('#level_id').val();
+            }
+        },
+        columns: [
+            {
+                data: "DT_RowIndex",
+                className: "text-center", 
+                orderable: false, 
+                searchable: false
+            },
+            {
+                data: "username", 
+                orderable: true,
+                searchable: true
+            },
+            {
+                data: "nama",
+                orderable: true, 
+                searchable: true
+            },
+            {
+                data: "level.level_nama",
+                orderable: false, 
+                searchable: false
+            },
+            {
+                data: "aksi",
+                orderable: false, 
+                searchable: false
+            },
+            {
+                data: "aksi_ajax",
+                orderable: false,
+                searchable: false
+            }
+        ]
+    });
 
-   });
+    $('#level_id').on('change', function() {
+        dataUser.ajax.reload();
+    });
+});
 </script> 
 @endpush
