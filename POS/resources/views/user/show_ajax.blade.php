@@ -27,6 +27,10 @@
         </div> 
         <div class="modal-body"> 
             <div class="form-group"> 
+                <label>ID</label> 
+                <input type="text" class="form-control" value="{{ $user->user_id }}" readonly>
+            </div>
+            <div class="form-group"> 
                 <label>Level Pengguna</label> 
                 <input type="text" class="form-control" value="{{ $user->level->level_nama ?? '-' }}" readonly>
             </div> 
