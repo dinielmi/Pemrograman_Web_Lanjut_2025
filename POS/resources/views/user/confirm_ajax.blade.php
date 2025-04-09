@@ -29,10 +29,10 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="alert alert-warning">
-                    <h5><i class="icon fas fa-ban"></i> Konfirmasi !!!</h5>
+                <div class="alert alert-danger" style="background-color: #f8d7da; color: #721c24;">
+                    <h5><i class="icon fas fa-exclamation-triangle"></i> Konfirmasi !!!</h5>
                     Apakah Anda ingin menghapus data seperti di bawah ini?
-                </div>
+                </div>                
                 <table class="table table-sm table-bordered table-striped">
                     <tr>
                         <th class="text-right col-3">Level Pengguna:</th>
@@ -49,8 +49,8 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-warning">Batal</button>
-                <button type="submit" class="btn btn-primary">Ya, Hapus</button>
+                <button type="button" data-dismiss="modal" class="btn btn-info">Batal</button>
+                <button type="submit" class="btn btn-danger" style="background-color: #f8d7da; color: #721c24; border-color: #f5c6cb;"> Ya, Hapus </button>
             </div>
         </div>
     </div>
