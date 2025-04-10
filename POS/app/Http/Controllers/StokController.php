@@ -7,6 +7,7 @@ use App\Models\BarangModel;
 use App\Models\SupplierModel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Validator;
 
 class StokController extends Controller
 {
@@ -37,29 +38,66 @@ class StokController extends Controller
 
     
 
+    // public function list(Request $request)
+    // {
+    //     $query = \App\Models\StokModel::query();
+    
+    //     if ($request->barang) {
+    //         $query->where('barang_id', $request->barang);
+    //     }
+    
+    //     return DataTables::of($query)
+    //         ->addColumn('aksi', function ($row) {
+    //             $btn = '<a href="' . route('stok.show', $row->stok_id) . '" class="btn btn-info btn-sm">Detail</a> ';
+    //             $btn .= '<a href="' . route('stok.edit', $row->stok_id) . '" class="btn btn-warning btn-sm">Edit</a> ';
+    //             $btn .= '<form action="' . route('stok.destroy', $row->stok_id) . '" method="POST" style="display:inline;">
+    //                         ' . csrf_field() . method_field('DELETE') . '
+    //                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Yakin?\')">Hapus</button>
+    //                      </form>';
+    //             return $btn;
+    //         })
+    //         ->rawColumns(['aksi']) 
+    //         ->addIndexColumn()     
+    //         ->make(true);
+    // }
+
+
     public function list(Request $request)
-    {
-        $query = \App\Models\StokModel::query();
-    
-        if ($request->barang) {
-            $query->where('barang_id', $request->barang);
-        }
-    
-        return DataTables::of($query)
-            ->addColumn('aksi', function ($row) {
-                $btn = '<a href="' . route('stok.show', $row->stok_id) . '" class="btn btn-info btn-sm">Detail</a> ';
-                $btn .= '<a href="' . route('stok.edit', $row->stok_id) . '" class="btn btn-warning btn-sm">Edit</a> ';
-                $btn .= '<form action="' . route('stok.destroy', $row->stok_id) . '" method="POST" style="display:inline;">
-                            ' . csrf_field() . method_field('DELETE') . '
-                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Yakin?\')">Hapus</button>
-                         </form>';
-                return $btn;
-            })
-            ->rawColumns(['aksi']) 
-            ->addIndexColumn()     
-            ->make(true);
+{
+    $data = StokModel::with('barang', 'supplier'); // relasi barang & supplier
+
+    if ($request->barang_id) {
+        $data->where('barang_id', $request->barang_id);
     }
-    
+
+    return datatables()->of($data)
+        ->addIndexColumn()
+        ->addColumn('aksi', function($row) {
+            return '
+            <a href="' . url("stok/$row->stok_id") . '" class="btn btn-info btn-sm mr-1">Detail</a>
+            <button onclick="modalAction(\'' . url("stok/$row->stok_id/show_ajax") . '\')" class="btn btn-outline-info btn-sm mr-1" title="Detail">
+                <i class="fa fa-eye"></i>
+            </button>
+
+            <a href="' . url("stok/$row->stok_id/edit") . '" class="btn btn-warning btn-sm mr-1">Edit</a>
+            <button onclick="modalAction(\'' . url("stok/$row->stok_id/edit_ajax") . '\')" class="btn btn-outline-warning btn-sm mr-1" title="Edit">
+                <i class="fa fa-edit"></i>
+            </button>
+
+            <form method="POST" action="' . url("stok/$row->stok_id") . '" style="display:inline;" onsubmit="return confirm(\'Yakin hapus data?\')">
+                ' . csrf_field() . method_field('DELETE') . '
+                <button class="btn btn-danger btn-sm mr-1">Delete</button>
+            </form>
+
+            <button onclick="modalAction(\'' . url("stok/$row->stok_id/delete_ajax") . '\')" class="btn btn-outline-danger btn-sm" title="Delete">
+                <i class="fa fa-trash"></i>
+            </button>
+        ';
+        })
+        ->rawColumns(['aksi'])
+        ->make(true);
+}
+
     
 
     public function create()
@@ -189,4 +227,44 @@ class StokController extends Controller
             return redirect('/stok')->with('error', 'Data stok gagal dihapus karena terkait dengan data lain');
         }
     }
+
+    public function create_ajax() {
+        $barang = BarangModel::select('barang_id', 'barang_nama')->get();
+        $supplier = SupplierModel::select('supplier_id', 'supplier_nama')->get();
+
+        return view('stok.create_ajax')
+            ->with('barang', $barang)
+            ->with('supplier', $supplier);
+    }
+
+    public function store_ajax(Request $request)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'barang_id' => 'required|integer',
+                'supplier_id' => 'required|integer',
+                'stok_jumlah' => 'required|integer|min:1',
+                'stok_tanggal' => 'required|date',
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false, 
+                    'message' => 'Validasi Gagal',
+                    'msgField' => $validator->errors(),
+                ]);
+            }
+
+            StokModel::create($request->all());
+            return response()->json([
+                'status' => true,
+                'message' => 'Data stok berhasil disimpan',
+            ]);
+        }
+        return redirect('/');
+    }
+
+
 }
