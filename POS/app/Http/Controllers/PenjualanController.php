@@ -6,6 +6,7 @@ use App\Models\PenjualanModel;
 use App\Models\BarangModel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Validator;
 
 class PenjualanController extends Controller
 {
@@ -31,25 +32,60 @@ class PenjualanController extends Controller
         ]);
     }
     
-    public function list(Request $request)
-    {
-        $penjualan = PenjualanModel::select('penjualan_id', 'penjualan_kode', 'pembeli', 'penjualan_tanggal');
+    // public function list(Request $request)
+    // {
+    //     $penjualan = PenjualanModel::select('penjualan_id', 'penjualan_kode', 'pembeli', 'penjualan_tanggal');
 
-        return DataTables::of($penjualan)
-            ->addIndexColumn()
-            ->addColumn('aksi', function ($penjualan) {
-                $btn = '<a href="' . url('/penjualan/' . $penjualan->penjualan_id) . '" class="btn btn-info btn-sm">Detail</a> ';
-                $btn .= '<a href="' . url('/penjualan/' . $penjualan->penjualan_id . '/edit') . '" class="btn btn-warning btn-sm">Edit</a> ';
-                $btn .= '<form class="d-inline-block" method="POST" action="' .
-                    url('/penjualan/' . $penjualan->penjualan_id) . '">'
-                    . csrf_field() . method_field('DELETE') .
-                   '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\');">Hapus</button></form>';
-                return $btn;
-            })
-            ->rawColumns(['aksi'])
-            ->make(true);
+    //     return DataTables::of($penjualan)
+    //         ->addIndexColumn()
+    //         ->addColumn('aksi', function ($penjualan) {
+    //             $btn = '<a href="' . url('/penjualan/' . $penjualan->penjualan_id) . '" class="btn btn-info btn-sm">Detail</a> ';
+    //             $btn .= '<a href="' . url('/penjualan/' . $penjualan->penjualan_id . '/edit') . '" class="btn btn-warning btn-sm">Edit</a> ';
+    //             $btn .= '<form class="d-inline-block" method="POST" action="' .
+    //                 url('/penjualan/' . $penjualan->penjualan_id) . '">'
+    //                 . csrf_field() . method_field('DELETE') .
+    //                '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\');">Hapus</button></form>';
+    //             return $btn;
+    //         })
+    //         ->rawColumns(['aksi'])
+    //         ->make(true);
+    // }
+
+    public function list(Request $request)
+{
+    $data = PenjualanModel::query();
+
+    if ($request->customer_id) {
+        $data->where('customer_id', $request->customer_id);
     }
 
+    return datatables()->of($data)
+        ->addIndexColumn()
+        ->addColumn('aksi', function($row) {
+            return '
+            <a href="' . url("penjualan/$row->penjualan_id") . '" class="btn btn-info btn-sm mr-1">Detail</a>
+            <button onclick="modalAction(\'' . url("penjualan/$row->penjualan_id/show_ajax") . '\')" class="btn btn-outline-info btn-sm mr-1" title="Detail">
+                <i class="fa fa-eye"></i>
+            </button>
+
+            <a href="' . url("penjualan/$row->penjualan_id/edit") . '" class="btn btn-warning btn-sm mr-1">Edit</a>
+            <button onclick="modalAction(\'' . url("penjualan/$row->penjualan_id/edit_ajax") . '\')" class="btn btn-outline-warning btn-sm mr-1" title="Edit">
+                <i class="fa fa-edit"></i>
+            </button>
+
+            <form method="POST" action="' . url("penjualan/$row->penjualan_id") . '" style="display:inline;" onsubmit="return confirm(\'Yakin hapus data?\')">
+                ' . csrf_field() . method_field('DELETE') . '
+                <button class="btn btn-danger btn-sm mr-1">Delete</button>
+            </form>
+
+            <button onclick="modalAction(\'' . url("penjualan/$row->penjualan_id/delete_ajax") . '\')" class="btn btn-outline-danger btn-sm" title="Delete">
+                <i class="fa fa-trash"></i>
+            </button>
+        ';
+        })
+        ->rawColumns(['aksi'])
+        ->make(true);
+}
 
     public function create()
     {
@@ -156,4 +192,40 @@ class PenjualanController extends Controller
             return redirect('/penjualan')->with('error', 'Data penjualan gagal dihapus karena masih terkait dengan data lain');
         }
     }
+
+    public function create_ajax()
+    {
+        return view('penjualan.create_ajax');
+    }
+
+    public function store_ajax(Request $request)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'penjualan_kode' => 'required',
+                'pembeli' => 'required',
+                'penjualan_tanggal' => 'required|date',
+            ];
+    
+            $validator = Validator::make($request->all(), $rules);
+    
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validasi Gagal',
+                    'msgField' => $validator->errors(),
+                ]);
+            }
+    
+            PenjualanModel::create($request->all());
+            return response()->json([
+                'status' => true,
+                'message' => 'Data user berhasil disimpan',
+            ]);
+        }
+    
+        return redirect('/')->with('success', 'Data user berhasil disimpan');
+    }
+    
+
 }
