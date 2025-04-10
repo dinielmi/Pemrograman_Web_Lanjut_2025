@@ -276,4 +276,31 @@ class PenjualanController extends Controller
         return redirect('/');
     }
 
+    public function confirm_ajax(string $id)
+    {
+        $penjualan = PenjualanModel::find($id);
+        return view('penjualan.confirm_ajax', compact('penjualan'));
+    }
+
+    public function delete_ajax(Request $request, $id)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            $penjualan = PenjualanModel::find($id);
+            if ($penjualan) {
+                $penjualan->delete();
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data berhasil dihapus'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data tidak ditemukan'
+                ]);
+            }
+        }
+
+        return redirect('/');
+    }
+
 }

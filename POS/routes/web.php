@@ -198,6 +198,8 @@ Route::group(['prefix' => 'penjualan'], function () {
      Route::get('/{id}/show_ajax', [PenjualanController::class, 'show_ajax']);
      Route::get('/{id}/edit_ajax', [PenjualanController::class, 'edit_ajax']);
      Route::put('/{id}/update_ajax', [PenjualanController::class, 'update_ajax']);
+     Route::get('/{id}/delete_ajax', [PenjualanController::class, 'confirm_ajax']);
+          Route::delete('/{id}/delete_ajax', [PenjualanController::class, 'delete_ajax']);
 
     Route::get('/{id}', [PenjualanController::class, 'show']);
     Route::get('/{id}/edit', [PenjualanController::class, 'edit']);
