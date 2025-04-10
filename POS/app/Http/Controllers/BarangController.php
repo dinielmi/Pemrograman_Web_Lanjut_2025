@@ -263,4 +263,51 @@ class BarangController extends Controller
         return view('barang.show_ajax', compact('barang'));
     }
 
+    public function edit_ajax(string $id)
+    {
+        $barang = BarangModel::find($id);
+        $kategori = KategoriModel::select('kategori_id', 'kategori_nama')->get();
+
+        return view('barang.edit_ajax', ['kategori' => $kategori ,'barang' => $barang]);
+    }
+
+    public function update_ajax(Request $request, string $id)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'barang_kode'   => 'required|max:10|unique:m_barang,barang_kode,' . $id . ',barang_id',
+                'barang_nama'   => 'required|max:100',
+                'kategori_id'   => 'required|integer',
+                'harga_beli'    => 'required|integer',
+                'harga_jual'    => 'required|integer',
+            ];
+            // use Illuminate\Support\Facades\Validator;
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false, // respon json, true: berhasil, false: gagal
+                    'message' => 'Validasi gagal.',
+                    'msgField' => $validator->errors(), // menunjukkan field mana yang error
+                ]);
+            }
+            $check = BarangModel::find($id);
+            if ($check) {
+                if (!$request->filled('password')) {
+                    $request->request->remove('password');
+                }
+                $check->update($request->all());
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data berhasil diupdate',
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data tidak ditemukan',
+                ]);
+            }
+        }
+        return redirect('/');
+    }
+
 }
