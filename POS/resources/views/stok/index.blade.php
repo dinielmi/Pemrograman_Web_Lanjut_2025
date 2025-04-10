@@ -36,7 +36,7 @@
         <table class="table table-bordered table-hover table-sm table-striped" id="table_stok">
             <thead>
                 <tr>
-                    <th>No</th>
+                    <th>ID</th>
                     <th>Jumlah</th>
                     <th>Tanggal</th>
                     <th>Barang ID</th>

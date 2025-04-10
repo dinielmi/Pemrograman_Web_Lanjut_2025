@@ -265,6 +265,11 @@ class StokController extends Controller
         }
         return redirect('/');
     }
+    public function show_ajax($id)
+    {
+        $stok = StokModel::with(['barang', 'supplier'])->find($id);
+        return view('stok.show_ajax', compact('stok'));
+    }
 
 
 }

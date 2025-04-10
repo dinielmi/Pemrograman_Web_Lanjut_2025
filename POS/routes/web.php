@@ -196,6 +196,7 @@ Route::prefix('stok')->group(function () {
      //route ajax
      Route::get('/create_ajax', [StokController::class, 'create_ajax']);
      Route::post('/ajax', [StokController::class, 'store_ajax']);
+     Route::get('/{id}/show_ajax', [StokController::class, 'show_ajax']);
 
     Route::get('/{id}', [StokController::class, 'show'])->name('stok.show');
     Route::get('/{id}/edit', [StokController::class, 'edit'])->name('stok.edit');
