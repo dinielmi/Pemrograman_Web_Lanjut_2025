@@ -130,6 +130,8 @@ Route::group(['prefix' => 'supplier'], function () {
     //route ajax
     Route::get('/create_ajax', [SupplierController::class, 'create_ajax']);
     Route::post('/ajax', [SupplierController::class, 'store_ajax']);
+    Route::get('/{id}/edit_ajax', [SupplierController::class, 'edit_ajax']);
+    Route::put('/{id}/update_ajax', [SupplierController::class, 'update_ajax']);
 
     Route::get('/{id}',[SupplierController::class, 'show']);
     Route::get('/{id}/edit',[SupplierController::class, 'edit']);

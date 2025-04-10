@@ -46,44 +46,44 @@ class SupplierController extends Controller
     // }
 
     public function list(Request $request)
-{
-    $data = SupplierModel::query();
+    {
+        $data = SupplierModel::query();
 
-    if ($request->has('filter_kode') && $request->filter_kode) {
-        $data->where('supplier_kode', 'like', '%' . $request->filter_kode . '%');
+        if ($request->has('filter_kode') && $request->filter_kode) {
+            $data->where('supplier_kode', 'like', '%' . $request->filter_kode . '%');
+        }
+
+        if ($request->has('filter_nama') && $request->filter_nama) {
+            $data->where('supplier_nama', 'like', '%' . $request->filter_nama . '%');
+        }
+
+        return datatables()->of($data)
+            ->addIndexColumn()
+            ->addColumn('aksi', function($supplier) {
+                return '
+                    <a href="' . url("supplier/$supplier->supplier_id") . '" class="btn btn-info btn-sm mr-1">Detail</a>
+                    <button onclick="modalAction(\'' . url("supplier/$supplier->supplier_id/show_ajax") . '\')" class="btn btn-outline-info btn-sm mr-1" title="Detail">
+                        <i class="fa fa-eye"></i>
+                    </button>
+
+                    <a href="' . url("supplier/$supplier->supplier_id/edit") . '" class="btn btn-warning btn-sm mr-1">Edit</a>
+                    <button onclick="modalAction(\'' . url("supplier/$supplier->supplier_id/edit_ajax") . '\')" class="btn btn-outline-warning btn-sm mr-1" title="Edit">
+                        <i class="fa fa-edit"></i>
+                    </button>
+
+                    <form method="POST" action="' . url("supplier/$supplier->supplier_id") . '" style="display:inline;" onsubmit="return confirm(\'Yakin hapus data?\')">
+                        ' . csrf_field() . method_field('DELETE') . '
+                        <button class="btn btn-danger btn-sm mr-1">Delete</button>
+                    </form>
+
+                    <button onclick="modalAction(\'' . url("supplier/$supplier->supplier_id/delete_ajax") . '\')" class="btn btn-outline-danger btn-sm" title="Delete">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                ';
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
     }
-
-    if ($request->has('filter_nama') && $request->filter_nama) {
-        $data->where('supplier_nama', 'like', '%' . $request->filter_nama . '%');
-    }
-
-    return datatables()->of($data)
-        ->addIndexColumn()
-        ->addColumn('aksi', function($row) {
-            return '
-                <a href="' . url("supplier/$row->supplier_id") . '" class="btn btn-info btn-sm mr-1">Detail</a>
-                <button onclick="modalAction(\'' . url("supplier/$row->supplier_id/show_ajax") . '\')" class="btn btn-outline-info btn-sm mr-1" title="Detail">
-                    <i class="fa fa-eye"></i>
-                </button>
-
-                <a href="' . url("supplier/$row->supplier_id/edit") . '" class="btn btn-warning btn-sm mr-1">Edit</a>
-                <button onclick="modalAction(\'' . url("supplier/$row->supplier_id/edit_ajax") . '\')" class="btn btn-outline-warning btn-sm mr-1" title="Edit">
-                    <i class="fa fa-edit"></i>
-                </button>
-
-                <form method="POST" action="' . url("supplier/$row->supplier_id") . '" style="display:inline;" onsubmit="return confirm(\'Yakin hapus data?\')">
-                    ' . csrf_field() . method_field('DELETE') . '
-                    <button class="btn btn-danger btn-sm mr-1">Delete</button>
-                </form>
-
-                <button onclick="modalAction(\'' . url("supplier/$row->supplier_id/delete_ajax") . '\')" class="btn btn-outline-danger btn-sm" title="Delete">
-                    <i class="fa fa-trash"></i>
-                </button>
-            ';
-        })
-        ->rawColumns(['aksi'])
-        ->make(true);
-}
 
 
     public function create()
@@ -222,6 +222,47 @@ class SupplierController extends Controller
          }
          return redirect('/');
      }
+
+     public function edit_ajax(string $id)
+     {
+         $supplier = SupplierModel::find($id);
+         return view('supplier.edit_ajax', compact('supplier'));
+     }
+
+    public function update_ajax(Request $request, string $id)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'supplier_kode'   => 'required|string|max:10',
+                'supplier_nama'   => 'required|string|max:100',
+                'alamat' => 'required|string|max:255',
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validasi Gagal',
+                    'msgField' => $validator->errors(),
+                ]);
+            }
+            $check = SupplierModel::find($id);
+            if ($check) {
+                $check->update($request->all());
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data supplier berhasil diubah',
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data supplier tidak ditemukan',
+                ]);
+            }
+        }
+        return redirect('/');
+    }
 
 
 }
