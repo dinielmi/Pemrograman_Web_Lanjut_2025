@@ -10,6 +10,9 @@ class PenjualanDetailSeeder extends Seeder
 {
     public function run(): void
     {
+        // Clear existing data first
+        DB::table('t_penjualan_detail')->truncate();
+        
         $data = [];
 
         for ($penjualan_id = 1; $penjualan_id <= 6; $penjualan_id++) {

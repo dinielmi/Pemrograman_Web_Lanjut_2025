@@ -211,9 +211,14 @@ Route::group(['prefix' => 'penjualan'], function () {
 
 Route::prefix('penjualan_detail')->group(function () {
     Route::get('/', [PenjualanDetailController::class, 'index']);
-    Route::get('/list', [PenjualanDetailController::class, 'list']);
+    Route::post('/list', [PenjualanDetailController::class, 'list']);
     Route::get('/create', [PenjualanDetailController::class, 'create']);
     Route::post('/', [PenjualanDetailController::class, 'store']);
+
+      //route ajax
+      Route::get('/create_ajax', [PenjualanDetailController::class, 'create_ajax']);
+      Route::post('/ajax', [PenjualanDetailController::class, 'store_ajax']);
+
     Route::get('/{id}', [PenjualanDetailController::class, 'show']);
     Route::get('/{id}/edit', [PenjualanDetailController::class, 'edit']);
     Route::put('/{id}', [PenjualanDetailController::class, 'update']);

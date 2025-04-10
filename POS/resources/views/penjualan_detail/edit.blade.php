@@ -18,9 +18,16 @@
             </div>
 
             <div class="form-group row">
-                <label class="col-2 control-label col-form-label">ID Barang</label>
+                <label class="col-2 control-label col-form-label">Barang</label>
                 <div class="col-10">
-                    <input type="text" class="form-control" name="barang_id" value="{{ $detail->barang_id }}" required>
+                    <select class="form-control" name="barang_id" required>
+                        <option value="">- Pilih Barang -</option>
+                        @foreach ($barang as $item)
+                            <option value="{{ $item->barang_id }}" {{ old('barang_id') == $item->barang_id ? 'selected' : '' }}>
+                                {{ $item->barang_id }} - {{ $item->barang_nama }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
 

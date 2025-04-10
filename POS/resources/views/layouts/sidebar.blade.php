@@ -72,7 +72,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ url('/penjualan_detail') }}" class="nav-link {{ Request::is('penjualan_detail') ? 'active' : '' }}">
+            <a href="{{ url('') }}" class="nav-link {{ Request::is('penjualan_detail') ? 'active' : '' }}">
               <i class="far fa-circle nav-icon"></i>
               <p>Penjualan Detail</p>
             </a>

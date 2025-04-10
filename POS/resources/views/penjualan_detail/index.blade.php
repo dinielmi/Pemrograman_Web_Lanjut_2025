@@ -5,7 +5,10 @@
     <div class="card-header">
         <h3 class="card-title">{{ $page->title }}</h3>
         <div class="card-tools">
-            <a href="{{ url('penjualan_detail/create') }}" class="btn btn-sm btn-primary">Tambah</a>
+            <a class="btn btn-sm btn-success mt-1" href="{{ url('penjualan_detail/create') }}">Tambah</a>
+            <button onclick="modalAction('{{ url('penjualan_detail/create_ajax') }}')" class="btn btn-sm btn-outline-success mt-1" title="Tambah Ajax">
+                <i class="fa fa-plus"></i>
+            </button>        
         </div>
     </div>
     <div class="card-body">
@@ -18,108 +21,75 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group row">
-                    <label for="penjualan_kode" class="col-1 control-label col-form-label">Filter:</label>
+                    <label class="col-1 control-label col-form-label">Filter:</label>
                     <div class="col-3">
-                        <select id="filter_penjualan" class="form-control">
-                            <option value="">- Semua Penjualan -</option>
-                            @foreach (\App\Models\PenjualanModel::all() as $item)
-                                <option value="{{ $item->penjualan_kode }}">{{ $item->penjualan_kode }}</option>
+                        <select class="form-control" id="barang_id" name="barang_id" required>
+                            <option value="">- Semua -</option>
+                            @foreach ($barang as $item)
+                                <option value="{{ $item->barang_id }}">{{ $item->barang_nama }}</option>
                             @endforeach
                         </select>
-                        <small class="form-text text-muted">Detail Penjualan</small>
+                        <small class="form-text text-muted">Nama Barang</small>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <table class="table table-bordered table-hover table-sm table-striped" id="table_penjualan_detail">
-
+        </div>        
+        <table class="table table-bordered table-striped table-hover table-sm" id="table_detail">
             <thead>
                 <tr>
-                    <th>No</th>
-                    <th>Penjualan ID</th>
-                    <th>Barang ID</th>
-                    <th>Jumlah</th>
+                    <th>ID</th>
                     <th>Harga</th>
+                    <th>Jumlah</th>
                     <th>Total</th>
+                    <th>Penjualan_id</th>
+                    <th>Barang_id</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach ($detail as $item)
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $item->penjualan_id }}</td>
-                    <td>{{ $item->barang_id }}</td>
-                    <td>{{ $item->jumlah }}</td>
-                    <td>{{ number_format($item->harga) }}</td>
-                    <td>{{ number_format($item->jumlah * $item->harga) }}</td>
-                    <td>
-                        <a href="{{ url('penjualan_detail/'.$item->detail_id) }}" class="btn btn-sm btn-info">Detail</a>
-                        <a href="{{ url('penjualan_detail/'.$item->detail_id.'/edit') }}" class="btn btn-sm btn-warning">Edit</a>
-
-                        <form action="{{ url('penjualan_detail/' . $item->penjualan_detail_id) }}" method="POST" style="display:inline-block;">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-sm btn-danger" onclick="return confirm('Hapus data ini?')">Hapus</button>
-                        </form>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
         </table>
     </div>
+</div> 
+<div id="myModal" class="modal fade animate shake" tabindex="-1" role="dialog" 
+     data-backdrop="static" data-keyboard="false" data-width="75%" aria-hidden="true">
 </div>
 @endsection
 
-{{-- @push('js')
-<script>
-    $(document).ready(function () {
-        let table = $('#table_penjualan_detail').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: '{{ url("penjualan_detail/list") }}',
-                type: 'POST', 
-                data: {
-                    _token: '{{ csrf_token() }}' // Menyertakan token CSRF
-                },
-                error: function(xhr, error, code) {
-                    console.log("Error: " + error + " Code: " + code);
-                }
-            },
-            columns: [
-                { data: 'penjualan_id', name: 'penjualan_id' },
-                { data: 'barang_id', name: 'barang_id' },
-                { data: 'jumlah', name: 'jumlah' },
-                { data: 'harga', name: 'harga' },
-                { data: 'total', name: 'total' },
-                { data: 'aksi', name: 'aksi', orderable: false, searchable: false }
-            ],
-        });
-        $('.table').DataTable({
-            responsive: true,
-            pageLength: 10,
-            language: {
-                url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/id.json'
-            }
-        });
-        $('input[name="search"]').focus();        
-    });
-</script>
-@endpush --}}
+@push('css') 
+@endpush
 
 @push('js')
 <script>
-    $(document).ready(function () {
-        $('.table').DataTable({
-            responsive: true,
-            pageLength: 10,
-            language: {
-                url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/id.json'
-            }
+    function modalAction(url = '') {
+        $('#myModal').load(url, function() {
+            $('#myModal').modal('show');
         });
-        $('input[name="search"]').focus();
+    }
+
+    $(document).ready(function() {
+        dataDetail = $('#table_detail').DataTable({
+            ajax: {
+                url: "{{ url('penjualan_detail/list') }}",
+                dataType: "json",
+                type: "POST",
+                data: function(d) {
+                    d.barang_id = $('#barang_id').val();
+                }
+            },
+            columns: [
+                { data: "detail_id" },
+                { data: "harga" },
+                { data: "jumlah" },
+                { data: "total" },
+                { data: "penjualan_id" },
+                { data: "barang_id" },
+                { data: "aksi", orderable: false, searchable: false }
+            ]
+
+        });
+
+        $('#barang_id').on('change', function() {
+            dataDetail.ajax.reload();
+        });
     });
-</script>
-@endpush 
+</script> 
+@endpush

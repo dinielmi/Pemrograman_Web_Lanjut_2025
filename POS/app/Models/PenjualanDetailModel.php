@@ -11,18 +11,27 @@ class PenjualanDetailModel extends Model
 
     protected $table = 't_penjualan_detail';
     protected $primaryKey = 'detail_id';
-    public $timestamps = false;
+
+    // timestamps true karena ada created_at dan updated_at di tabel
+    public $timestamps = true;
 
     protected $fillable = [
         'penjualan_id',
         'barang_id',
         'jumlah',
         'harga',
-        'detail',
+        'total', // tambahkan kolom total karena ada di tabel
     ];
 
+    // Relasi ke tabel m_barang
     public function barang()
     {
-        return $this->belongsTo(BarangModel::class, 'barang_id');
+        return $this->belongsTo(BarangModel::class, 'barang_id', 'barang_id');
+    }
+
+    // Relasi ke tabel t_penjualan
+    public function penjualan()
+    {
+        return $this->belongsTo(PenjualanModel::class, 'penjualan_id', 'penjualan_id');
     }
 }
