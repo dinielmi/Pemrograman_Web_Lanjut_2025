@@ -43,7 +43,7 @@
                          <label>Alamat Supplier</label>
                          <input value="{{ $supplier->alamat }}" type="text" name="alamat" id="alamat" class="form-control"
                              required>
-                         <small id="error-supplier_alamat" class="error-text form-text text-danger"></small>
+                         <small id="error-alamat" class="error-text form-text text-danger"></small>
                      </div>
                  </div>
                  <div class="modal-footer">
