@@ -42,11 +42,8 @@
  @push('js')
  <script>
     function modalAction(url = '') {
-        $('#myModal').load(url, function() {
+         $('#myModal').load(url, function() {
             $('#myModal').modal('show');
-            $('#myModal').find("script").each(function() {
-                $.globalEval(this.text || this.textContent || this.innerHTML || '');
-            });
         });
     }
 

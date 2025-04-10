@@ -57,15 +57,11 @@
 
 @push('js')
 <script>
-function modalAction(url = '') {
-    $('#myModal').load(url, function() {
-        $('#myModal').modal('show');
-        $('#myModal').find("script").each(function() {
-            $.globalEval(this.text || this.textContent || this.innerHTML || '');
+    function modalAction(url = '') {
+         $('#myModal').load(url, function() {
+            $('#myModal').modal('show');
         });
-    });
-}
-
+    }
 $(document).ready(function() {
     dataUser = $('#table_user').DataTable({
         ajax: {
