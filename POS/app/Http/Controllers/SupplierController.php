@@ -201,7 +201,7 @@ class SupplierController extends Controller
              $rules = [
                  'supplier_kode'   => 'required|string|max:10|unique:m_supplier,supplier_kode',
                  'supplier_nama'   => 'required|string|max:100',
-                 'supplier_alamat' => 'required|string|max:255',
+                 'alamat' => 'required|string|max:255',
              ];
              // use Illuminate\Support\Facades\Validator;
              $validator = Validator::make($request->all(), $rules);
@@ -270,5 +270,31 @@ class SupplierController extends Controller
         return view('supplier.show_ajax', compact('supplier'));
     }
 
+    public function confirm_ajax(string $id)
+    {
+        $supplier = SupplierModel::find($id);
+        return view('supplier.confirm_ajax', ['supplier' => $supplier]);
+    }
+
+    public function delete_ajax(Request $request, string $id)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            $supplier = SupplierModel::find($id);
+
+            if ($supplier) {
+                $supplier->delete();
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data berhasil dihapus'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data tidak ditemukan'
+                ]);
+            }
+        }
+        return redirect('/');
+    }
 
 }
