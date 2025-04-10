@@ -20,8 +20,8 @@
                 </div>
                 <div class="form-group">
                     <label>Alamat Supplier</label>
-                    <input value="" type="text" name="supplier_alamat" id="supplier_alamat" class="form-control" required>
-                    <small id="error-supplier_alamat" class="error-text form-text text-danger"></small>
+                    <input value="" type="text" name="alamat" id="alamat" class="form-control" required>
+                    <small id="error-alamat" class="error-text form-text text-danger"></small>
                 </div>
             </div>
             <div class="modal-footer">
@@ -46,7 +46,7 @@
                     minlength: 5,
                     maxlength: 100
                 },
-                supplier_alamat: {
+                alamat: {
                     required: true,
                     minlength: 5,
                     maxlength: 255
