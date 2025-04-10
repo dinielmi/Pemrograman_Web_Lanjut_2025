@@ -296,5 +296,6 @@ class SupplierController extends Controller
         }
         return redirect('/');
     }
+    
 
 }
