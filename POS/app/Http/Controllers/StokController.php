@@ -271,5 +271,50 @@ class StokController extends Controller
         return view('stok.show_ajax', compact('stok'));
     }
 
+    public function edit_ajax(string $id)
+    {
+        $stok = StokModel::find($id);
+        $barang = BarangModel::select('barang_id', 'barang_nama')->get();
+        $supplier = SupplierModel::select('supplier_id', 'supplier_nama')->get();
+
+        return view('stok.edit_ajax', ['stok' => $stok, 'barang' => $barang, 'supplier' => $supplier]);
+    }
+
+    public function update_ajax(Request $request, $id) {
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'barang_id' => 'required|integer',
+                'supplier_id' => 'required|integer',
+                'stok_jumlah' => 'required|integer|min:1',
+                'stok_tanggal' => 'required|date',
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validasi gagal.',
+                    'msgField' => $validator->errors(),
+                ]);
+            }
+
+            $stok = StokModel::find($id);
+            if ($stok) {
+                $stok->update($request->all());
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data stok berhasil diupdate',
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data stok tidak ditemukan',
+                ]);
+            }
+        }
+
+        return redirect('/');
+    }
 
 }
