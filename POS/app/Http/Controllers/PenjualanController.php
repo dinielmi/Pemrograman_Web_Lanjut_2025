@@ -227,5 +227,10 @@ class PenjualanController extends Controller
         return redirect('/')->with('success', 'Data user berhasil disimpan');
     }
     
+    public function show_ajax($id)
+    {
+        $penjualan = PenjualanModel::find($id);
+        return view('penjualan.show_ajax', compact('penjualan'));
+    }
 
 }
