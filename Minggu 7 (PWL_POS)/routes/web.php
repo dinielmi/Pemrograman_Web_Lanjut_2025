@@ -47,7 +47,7 @@ Route::middleware(['auth'])->group(function () { // artinya semua route di dalam
     Route::get('/', [WelcomeController::class, 'index']);
 });
 
-Route::middleware(['authorize:ADMIN'])->group(function () {
+Route::middleware(['authorize:ADMIN, MNG, STF'])->group(function () {
     Route::group(['prefix' => 'user'], function () {
         Route::get('/', [UserController::class, 'index']);         // menampilkan halaman awal user
         Route::post('/list', [UserController::class, 'list']);      // menampilkan data user dalam bentuk json untuk datatables
@@ -69,7 +69,7 @@ Route::middleware(['authorize:ADMIN'])->group(function () {
     });
 });
 
-Route::middleware(['authorize:ADMIN'])->group(function () {
+Route::middleware(['authorize:ADMIN, MNG'])->group(function () {
     Route::group(['prefix' => 'level'], function () {
         Route::get('/',[LevelController::class, 'index']);
         Route::post('/list',[LevelController::class, 'list']);
@@ -91,7 +91,7 @@ Route::middleware(['authorize:ADMIN'])->group(function () {
     });
 });
 
-Route::middleware(['authorize:ADMIN'])->group(function () {
+Route::middleware(['authorize:ADMIN, MNG'])->group(function () {
     Route::group(['prefix' => 'kategori'], function () {
         Route::get('/',[KategoriController::class, 'index']);
         Route::post('/list',[KategoriController::class, 'list']);
@@ -113,7 +113,7 @@ Route::middleware(['authorize:ADMIN'])->group(function () {
     });
 });
 
-Route::middleware(['authorize:ADMIN'])->group(function () {
+Route::middleware(['authorize:ADMIN, MNG'])->group(function () {
     Route::group(['prefix' => 'supplier'], function () {
         Route::get('/',[SupplierController::class, 'index']);
         Route::post('/list',[SupplierController::class, 'list']);
@@ -135,7 +135,7 @@ Route::middleware(['authorize:ADMIN'])->group(function () {
     });
 });
 
-Route::middleware(['authorize:ADMIN'])->group(function () {
+Route::middleware(['authorize:ADMIN, STF'])->group(function () {
     Route::group(['prefix' => 'barang'], function () {
         Route::get('/',[BarangController::class, 'index']);
         Route::post('/list',[BarangController::class, 'list']);

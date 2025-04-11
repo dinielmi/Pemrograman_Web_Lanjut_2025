@@ -52,7 +52,7 @@ Route::middleware(['auth'])->group(function () { // artinya semua route di dalam
     Route::get('/', [HomepageController::class, 'index']);
 });
 
-Route::middleware(['authorize:ADM'])->group(function () {
+Route::middleware(['authorize:ADM, MNG, STF'])->group(function () {
     Route::group(['prefix' => 'user'], function () {
         Route::get('/', [UserController::class, 'index']);         
         Route::post('/list', [UserController::class, 'list']);      
