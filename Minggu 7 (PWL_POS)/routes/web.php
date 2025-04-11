@@ -46,6 +46,8 @@ Route::middleware(['auth'])->group(function () { // artinya semua route di dalam
     Route::get('/', [WelcomeController::class, 'index']);
 });
 
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
 Route::group(['prefix' => 'user'], function () {
     Route::get('/', [UserController::class, 'index']);         // menampilkan halaman awal user
     Route::post('/list', [UserController::class, 'list']);      // menampilkan data user dalam bentuk json untuk datatables
