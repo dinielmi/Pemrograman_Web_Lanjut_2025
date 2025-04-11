@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\KategoriController;
@@ -27,34 +28,30 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-Route::get('/', [HomepageController::class, 'index']);
+// Route::get('/', [HomepageController::class, 'index']);
 
-Route::prefix('product')->group(function() {
-    Route::get('/', [ProductController::class, 'index'])->name('product.index');
-    Route::get('/category/food-beverage', [ProductController::class, 'foodBeverage'])->name('product.food-beverage');
-    Route::get('/category/beauty-health', [ProductController::class, 'beautyHealth'])->name('product.beauty-health');
-    Route::get('/category/home-care', [ProductController::class, 'homeCare'])->name('product.home-care');
-    Route::get('/category/baby-kid', [ProductController::class, 'babyKids'])->name('product.baby-kid');
+// Route::prefix('product')->group(function() {
+//     Route::get('/', [ProductController::class, 'index'])->name('product.index');
+//     Route::get('/category/food-beverage', [ProductController::class, 'foodBeverage'])->name('product.food-beverage');
+//     Route::get('/category/beauty-health', [ProductController::class, 'beautyHealth'])->name('product.beauty-health');
+//     Route::get('/category/home-care', [ProductController::class, 'homeCare'])->name('product.home-care');
+//     Route::get('/category/baby-kid', [ProductController::class, 'babyKids'])->name('product.baby-kid');
+// });
+
+// Route::get('/user/{id}/name/{name}', [UserController::class, 'show']);
+
+// Route::get('/sales', function(){
+//     return view('transaction');
+// });
+
+Route::pattern('id', '[0-9]+'); // artinya ketika ada parameter {id}, maka harus berupa angka
+Route::get('login', [AuthController::class, 'login'])->name('login');
+Route::post('login', [AuthController::class, 'postlogin']);
+Route::post('logout', [AuthController::class, 'logout'])->middleware('auth');
+Route::middleware(['auth'])->group(function () { // artinya semua route di dalam group ini harus login dulu
+    Route::get('/', [HomepageController::class, 'index']);
 });
 
-Route::get('/user/{id}/name/{name}', [UserController::class, 'show']);
-
-Route::get('/sales', function(){
-    return view('transaction');
-});
-
-
-
-Route::get('/level', [LevelController::class, 'index']);
-Route::get('/kategori', [KategoriController::class, 'index']);
-Route::get('/user', [UserController::class, 'index']);
-
-// //praktikum 2.6
-// Route::get('/user/tambah', [UserController::class, 'tambah']);
-// Route::post('/user/tambah_simpan', [UserController::class, 'tambah_simpan']);
-// Route::get('user/ubah/{id}', [UserController::class, 'ubah']);
-// Route::put('/user/ubah_simpan/{id}', [UserController::class, 'ubah_simpan']);
-// Route::get('/user/hapus/{id}', [UserController::class, 'hapus']);
 
 Route::group(['prefix' => 'user'], function () {
     Route::get('/', [UserController::class, 'index']);         
