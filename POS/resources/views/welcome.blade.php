@@ -4,11 +4,11 @@
 <div class="card">
    <div class="card-header">
        <h3 class="card-title">
-           Halo, apakabar! <br><br>
-           Hello, how are you? <br><br>
-           こんにちは、お元気ですか？<br><br>
-           你好，你好吗？ <br><br>
-           안녕하세요, 어떻게 지내세요? <br>
+           <span style="color: rgb(223, 53, 141);">Halo, apakabar!</span> <br><br>
+           <span style="color: blue;">Hello, how are you?</span> <br><br>
+           <span style="color: green;">こんにちは、お元気ですか？</span><br><br>
+           <span style="color: orange;">你好，你好吗？</span> <br><br>
+           <span style="color: red;">안녕하세요, 어떻게 지내세요?</span> <br>
        </h3>
        <div class="card-tools"></div>
    </div>

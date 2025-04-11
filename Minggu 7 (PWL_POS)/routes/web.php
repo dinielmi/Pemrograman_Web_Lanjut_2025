@@ -47,7 +47,7 @@ Route::middleware(['auth'])->group(function () { // artinya semua route di dalam
     Route::get('/', [WelcomeController::class, 'index']);
 });
 
-// Route::middleware(['authorize:ADMIN'])->group(function () {
+Route::middleware(['authorize:ADMIN'])->group(function () {
     Route::group(['prefix' => 'user'], function () {
         Route::get('/', [UserController::class, 'index']);         // menampilkan halaman awal user
         Route::post('/list', [UserController::class, 'list']);      // menampilkan data user dalam bentuk json untuk datatables
@@ -67,7 +67,7 @@ Route::middleware(['auth'])->group(function () { // artinya semua route di dalam
         Route::delete('/{id}', [UserController::class, 'destroy']);  // menghapus data user
         Route::post('/data', [UserController::class, 'getUsers'])->name('user.data');
     });
-// });
+});
 
 Route::middleware(['authorize:ADMIN'])->group(function () {
     Route::group(['prefix' => 'level'], function () {
