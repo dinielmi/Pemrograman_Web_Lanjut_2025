@@ -9,7 +9,7 @@ class HomepageController extends Controller
     public function index()
     {
         $breadcrumb = (object) [
-            'title' => 'Selamat Datang',
+            'title' => 'Welcome to the Web Page',
             'list' => ['Home', 'Welcome']
         ];
         

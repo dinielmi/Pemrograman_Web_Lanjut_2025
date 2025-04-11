@@ -52,6 +52,7 @@ Route::middleware(['auth'])->group(function () { // artinya semua route di dalam
     Route::get('/', [HomepageController::class, 'index']);
 });
 
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::group(['prefix' => 'user'], function () {
     Route::get('/', [UserController::class, 'index']);         
