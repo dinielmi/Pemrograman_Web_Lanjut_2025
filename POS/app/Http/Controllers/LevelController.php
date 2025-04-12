@@ -6,6 +6,7 @@ use App\Models\LevelModel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
+use Barryvdh\DomPDF\Facade\Pdf;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class LevelController extends Controller
@@ -286,54 +287,80 @@ class LevelController extends Controller
                 foreach ($data as $baris => $value) {
                     if ($baris > 1) {
                         $insert[] = [
-                            'level_nama' => $value['A'],
+                            'level_kode' => $value['A'],
+                            'level_nama' => $value['B'],
                             'created_at' => now()
                         ];
                     }
                 }
+    
                 if (count($insert) > 0) {
                     LevelModel::insertOrIgnore($insert);
                 }
-                return response()->json(['status' => true, 'message' => 'Data berhasil diimport']);
-            }
     
-            return response()->json(['status' => false, 'message' => 'Tidak ada data yang diimport']);
+                return response()->json([
+                    'status'  => true,
+                    'message' => 'Data Level berhasil diimport'
+                ]);
+            } else {
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'Tidak ada data yang diimport'
+                ]);
+            }
         }
     
         return redirect('/');
     }
 
     public function export_excel()
-    {
-        $data = LevelModel::select('level_nama')->orderBy('level_nama')->get();
+{
+    $data = LevelModel::select('level_kode', 'level_nama')->orderBy('level_nama')->get();
+    $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+    $sheet = $spreadsheet->getActiveSheet();
 
-        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
+    $sheet->setCellValue('A1', 'No');
+    $sheet->setCellValue('B1', 'Kode Level');
+    $sheet->setCellValue('C1', 'Nama Level');
+    $sheet->getStyle('A1:C1')->getFont()->setBold(true);
 
-        $sheet->setCellValue('A1', 'No');
-        $sheet->setCellValue('B1', 'Nama Level');
-        $sheet->getStyle('A1:B1')->getFont()->setBold(true);
-
-        $no = 1;
-        $baris = 2;
-        foreach ($data as $value) {
-            $sheet->setCellValue('A' . $baris, $no++);
-            $sheet->setCellValue('B' . $baris, $value->level_nama);
-            $baris++;
-        }
-
-        foreach (range('A', 'B') as $columnID) {
-            $sheet->getColumnDimension($columnID)->setAutoSize(true);
-        }
-
-        $sheet->setTitle('Data Level');
-        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $filename = 'Data Level ' . date('Y-m-d H-i-s') . '.xlsx';
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header("Content-Disposition: attachment; filename=\"$filename\"");
-        $writer->save('php://output');
-        exit;
+    $row = 2;
+    $no = 1;
+    foreach ($data as $value) {
+        $sheet->setCellValue('A' . $row, $no++);
+        $sheet->setCellValue('B' . $row, $value->level_kode);
+        $sheet->setCellValue('C' . $row, $value->level_nama);
+        $row++;
     }
 
+    foreach (range('A', 'C') as $columnID) {
+        $sheet->getColumnDimension($columnID)->setAutoSize(true);
+    }
+
+    $sheet->setTitle('Level User');
+    $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+    $filename = 'Data Level User ' . date('Y-m-d H:i:s') . '.xlsx';
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header('Content-Disposition: attachment;filename="' . $filename . '"');
+    header('Cache-Control: max-age=0');
+    header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+    header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+    header('Cache-Control: cache, must-revalidate');
+    header('Pragma: public');
+
+    $writer->save('php://output');
+    exit;
+}
+
+public function export_pdf()
+{
+    $level = LevelModel::orderBy('level_id')->get(); // Ambil data level user
+    $pdf = Pdf::loadView('level.export_pdf', ['level' => $level]);
+    $pdf->setPaper('a4', 'portrait'); 
+    $pdf->setOption("isRemoteEnabled", true);
+    $pdf->render();
+
+    return $pdf->stream('Data Level User ' . date('Y-m-d H:i:s') . '.pdf');
+}
 
 }   

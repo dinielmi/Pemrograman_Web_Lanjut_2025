@@ -74,6 +74,7 @@ Route::middleware(['authorize:ADM, 22MNG, STF'])->group(function () {
             Route::get('/import', [UserController::class, 'import']); // ajax form upload excel
             Route::post('/import_ajax', [UserController::class, 'import_ajax']); // ajax import excel
             Route::get('/export_excel', [UserController::class, 'export_excel']);
+            Route::get('/export_pdf', [UserController::class, 'export_pdf']);
         
         Route::get('/{id}/edit', [UserController::class, 'edit']);   
         Route::put('/{id}', [UserController::class, 'update']);     
@@ -101,6 +102,7 @@ Route::middleware(['authorize:ADM'])->group(function () {
             Route::get('/import', [LevelController::class, 'import']); // ajax form upload excel
             Route::post('/import_ajax', [LevelController::class, 'import_ajax']); // ajax import excel
             Route::get('/export_excel', [LevelController::class, 'export_excel']);
+            Route::get('/export_pdf', [LevelController::class, 'export_pdf']);
 
             
         Route::get('/{id}',[LevelController::class, 'show']);
@@ -128,6 +130,7 @@ Route::middleware(['authorize:ADM'])->group(function () {
             Route::get('/import', [KategoriController::class, 'import']); // ajax form upload excel
             Route::post('/import_ajax', [KategoriController::class, 'import_ajax']); // ajax import excel
             Route::get('/export_excel', [KategoriController::class, 'export_excel']);
+            Route::get('/export_pdf', [KategoriController::class, 'export_pdf']);
 
         Route::get('/{id}',[KategoriController::class, 'show']);
         Route::get('/{id}/edit',[KategoriController::class, 'edit']);
@@ -154,6 +157,7 @@ Route::middleware(['authorize:ADM'])->group(function () {
             Route::get('/import', [SupplierController::class, 'import']); // ajax form upload excel
             Route::post('/import_ajax', [SupplierController::class, 'import_ajax']); // ajax import excel
             Route::get('/export_excel', [SupplierController::class, 'export_excel']);
+            Route::get('/export_pdf', [SupplierController::class, 'export_pdf']);
 
         Route::get('/{id}',[SupplierController::class, 'show']);
         Route::get('/{id}/edit',[SupplierController::class, 'edit']);
@@ -180,6 +184,7 @@ Route::middleware(['authorize:ADM'])->group(function () {
             Route::get('/import', [BarangController::class, 'import']); // ajax form upload excel
             Route::post('/import_ajax', [BarangController::class, 'import_ajax']); // ajax import excel
             Route::get('/export_excel', [BarangController::class, 'export_excel']);
+            Route::get('/export_pdf', [BarangController::class, 'export_pdf']);
 
         Route::get('/{id}',[BarangController::class, 'show']);
         Route::get('/{id}/edit',[BarangController::class, 'edit']);
@@ -206,6 +211,7 @@ Route::middleware(['authorize:ADM'])->group(function () {
         Route::get('/import', [StokController::class, 'import']); // ajax form upload excel
         Route::post('/import_ajax', [StokController::class, 'import_ajax']); // ajax import excel
         Route::get('/export_excel', [StokController::class, 'export_excel']);
+        Route::get('/export_pdf', [StokController::class, 'export_pdf']);
 
         Route::get('/{id}', [StokController::class, 'show'])->name('stok.show');
         Route::get('/{id}/edit', [StokController::class, 'edit'])->name('stok.edit');
@@ -232,6 +238,7 @@ Route::middleware(['authorize:ADM'])->group(function () {
         Route::get('/import', [PenjualanController::class, 'import']); // ajax form upload excel
         Route::post('/import_ajax', [PenjualanController::class, 'import_ajax']); // ajax import excel
         Route::get('/export_excel', [PenjualanController::class, 'export_excel']);
+        Route::get('/export_pdf', [PenjualanController::class, 'export_pdf']);
 
         Route::get('/{id}', [PenjualanController::class, 'show']);
         Route::get('/{id}/edit', [PenjualanController::class, 'edit']);

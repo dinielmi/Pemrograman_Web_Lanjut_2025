@@ -8,6 +8,7 @@ use App\Models\SupplierModel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Validator;
 
 class StokController extends Controller
@@ -405,7 +406,7 @@ public function import_ajax(Request $request)
     return redirect('/');
 }
 
-public function export_excel_stok()
+public function export_excel()
 {
     $data = StokModel::with('barang', 'supplier')->orderBy('stok_tanggal')->get();
     $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
@@ -444,5 +445,17 @@ public function export_excel_stok()
     $writer->save('php://output');
     exit;
 }
+
+public function export_pdf()
+{
+    $stok = StokModel::orderBy('stok_id')->get(); // Ambil data stok barang
+    $pdf = Pdf::loadView('stok.export_pdf', ['stok' => $stok]);
+    $pdf->setPaper('a4', 'portrait');
+    $pdf->setOption("isRemoteEnabled", true);
+    $pdf->render();
+
+    return $pdf->stream('Data Stok Barang ' . date('Y-m-d H:i:s') . '.pdf');
+}
+
 
 }

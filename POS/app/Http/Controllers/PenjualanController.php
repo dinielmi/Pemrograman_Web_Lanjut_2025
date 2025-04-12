@@ -7,6 +7,7 @@ use App\Models\BarangModel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Validator;
 
 class PenjualanController extends Controller
@@ -305,101 +306,113 @@ class PenjualanController extends Controller
     }
 
     public function import()
-{
-    return view('penjualan.import');
-}
+    {
+        return view('penjualan.import');
+    }
 
-public function import_ajax(Request $request)
-{
-    if ($request->ajax() || $request->wantsJson()) {
-        $rules = ['file_penjualan' => ['required', 'mimes:xlsx', 'max:1024']];
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status'    => false,
-                'message'   => 'Validasi Gagal',
-                'msgField'  => $validator->errors()
-            ]);
-        }
-
-        $file = $request->file('file_penjualan');
-        $reader = IOFactory::createReader('Xlsx');
-        $reader->setReadDataOnly(true);
-        $spreadsheet = $reader->load($file->getRealPath());
-        $sheet = $spreadsheet->getActiveSheet();
-        $data = $sheet->toArray(null, false, true, true);
-        $insert = [];
-
-        if (count($data) > 1) {
-            foreach ($data as $baris => $value) {
-                if ($baris > 1) {
-                    $insert[] = [
-                        'penjualan_kode' => $value['A'],
-                        'penjualan_tanggal' => $value['B'],
-                        'user_id' => auth()->id(),
-                        'created_at' => now()
-                    ];
+    public function import_ajax(Request $request)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = ['file_penjualan' => ['required', 'mimes:xlsx', 'max:1024']];
+            $validator = Validator::make($request->all(), $rules);
+    
+            if ($validator->fails()) {
+                return response()->json([
+                    'status'    => false,
+                    'message'   => 'Validasi Gagal',
+                    'msgField'  => $validator->errors()
+                ]);
+            }
+    
+            $file = $request->file('file_penjualan');
+            $reader = IOFactory::createReader('Xlsx');
+            $reader->setReadDataOnly(true);
+            $spreadsheet = $reader->load($file->getRealPath());
+            $sheet = $spreadsheet->getActiveSheet();
+            $data = $sheet->toArray(null, false, true, true);
+            $insert = [];
+    
+            if (count($data) > 1) {
+                foreach ($data as $baris => $value) {
+                    if ($baris > 1) {
+                        $insert[] = [
+                            'penjualan_kode' => $value['A'], // Kode Penjualan
+                            'penjualan_pembeli' => $value['B'], // Pembeli (misalnya nama pembeli)
+                            'penjualan_tanggal' => $value['C'], // Tanggal
+                            'user_id' => auth()->id(),
+                            'created_at' => now()
+                        ];
+                    }
                 }
+    
+                if (count($insert) > 0) {
+                    PenjualanModel::insertOrIgnore($insert);
+                }
+    
+                return response()->json([
+                    'status'  => true,
+                    'message' => 'Data Penjualan berhasil diimport'
+                ]);
+            } else {
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'Tidak ada data yang diimport'
+                ]);
             }
-
-            if (count($insert) > 0) {
-                PenjualanModel::insertOrIgnore($insert);
-            }
-
-            return response()->json([
-                'status'  => true,
-                'message' => 'Data Penjualan berhasil diimport'
-            ]);
-        } else {
-            return response()->json([
-                'status'  => false,
-                'message' => 'Tidak ada data yang diimport'
-            ]);
         }
+    
+        return redirect('/');
+    }
+    
+
+    public function export_excel()
+    {
+        $data = PenjualanModel::orderBy('penjualan_tanggal')->get();
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+    
+        $sheet->setCellValue('A1', 'Kode Penjualan');
+        $sheet->setCellValue('B1', 'Pembeli');
+        $sheet->setCellValue('C1', 'Tanggal');
+        $sheet->getStyle('A1:D1')->getFont()->setBold(true);
+    
+        $row = 2;
+        foreach ($data as $value) {
+            $sheet->setCellValue('A' . $row, $value->penjualan_kode); // Kode Penjualan
+            $sheet->setCellValue('B' . $row, $value->penjualan_pembeli); // Pembeli
+            $sheet->setCellValue('C' . $row, $value->penjualan_tanggal); // Tanggal
+            $row++;
+        }
+    
+        foreach (range('A', 'D') as $columnID) {
+            $sheet->getColumnDimension($columnID)->setAutoSize(true);
+        }
+    
+        $sheet->setTitle('Data Penjualan');
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $filename = 'Data Penjualan ' . date('Y-m-d H:i:s') . '.xlsx';
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        header('Cache-Control: cache, must-revalidate');
+        header('Pragma: public');
+    
+        $writer->save('php://output');
+        exit;
+    }    
+
+    public function export_pdf()
+    {
+        $penjualan = PenjualanModel::orderBy('penjualan_tanggal')->get(); // Ambil data penjualan
+        $pdf = Pdf::loadView('penjualan.export_pdf', ['penjualan' => $penjualan]);
+        $pdf->setPaper('a4', 'portrait');
+        $pdf->setOption("isRemoteEnabled", true);
+        $pdf->render();
+
+        return $pdf->stream('Data Penjualan ' . date('Y-m-d H:i:s') . '.pdf');
     }
 
-    return redirect('/');
-}
-
-public function export_excel_penjualan()
-{
-    $data = PenjualanModel::with('user')->orderBy('penjualan_tanggal')->get();
-    $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
-    $sheet = $spreadsheet->getActiveSheet();
-
-    $sheet->setCellValue('A1', 'ID');
-    $sheet->setCellValue('B1', 'Tanggal');
-    $sheet->setCellValue('C1', 'Total');
-    $sheet->setCellValue('D1', 'User');
-    $sheet->getStyle('A1:D1')->getFont()->setBold(true);
-
-    $row = 2;
-    foreach ($data as $value) {
-        $sheet->setCellValue('A' . $row, $value->penjualan_id);
-        $sheet->setCellValue('B' . $row, $value->penjualan_tanggal);
-        $sheet->setCellValue('C' . $row, $value->penjualan_total);
-        $sheet->setCellValue('D' . $row, $value->user->user_nama);
-        $row++;
-    }
-
-    foreach (range('A', 'D') as $columnID) {
-        $sheet->getColumnDimension($columnID)->setAutoSize(true);
-    }
-
-    $sheet->setTitle('Data Penjualan');
-    $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-    $filename = 'Data Penjualan ' . date('Y-m-d H:i:s') . '.xlsx';
-    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    header('Content-Disposition: attachment;filename="' . $filename . '"');
-    header('Cache-Control: max-age=0');
-    header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-    header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-    header('Cache-Control: cache, must-revalidate');
-    header('Pragma: public');
-
-    $writer->save('php://output');
-    exit;
-}
 
 }

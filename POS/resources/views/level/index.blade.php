@@ -7,6 +7,7 @@
          <div class="card-tools">
             <button onclick="modalAction('{{ url('/level/import') }}')" class="btn btn-sm btn-info mt-1">Import</button>
             <a href="{{ url('/level/export_excel') }}" class="btn btn-primary btn-sm py-1 px-2 mt-1"><i class="fa fa-fileexcel"></i> Export</a>
+            <a href="{{ url('/level/export_pdf') }}" class="btn btn-warning btn-sm py-1 px-2 mt-1"><i class="fa fa-file pdf"></i> pdf</a> 
             <a class="btn btn-sm btn-success mt-1" href="{{ url('level/create') }}">Tambah</a>
             <button onclick="modalAction('{{ url('level/create_ajax') }}')" class="btn btn-sm btn-outline-success mt-1" title="Tambah Ajax">
                 <i class="fa fa-plus"></i>
