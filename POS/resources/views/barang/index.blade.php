@@ -4,8 +4,9 @@
 <div class="card card-outline card-primary">
     <div class="card-header">
         <h3 class="card-title">Daftar Barang</h3>
-    <div class="card-tools">        <button onclick="modalAction('{{ url('/barang/import') }}')" class="btn btn-sm btn-info mt-1">Import Barang</button>
-
+    <div class="card-tools">
+            <button onclick="modalAction('{{ url('/barang/import') }}')" class="btn btn-sm btn-info mt-1">Import</button>
+            <a href="{{ url('/barang/export_excel') }}" class="btn btn-primary btn-sm py-1 px-2 mt-1"><i class="fa fa-fileexcel"></i> Export</a>
             <a class="btn btn-sm btn-success mt-1" href="{{ url('barang/create') }}">Tambah</a>
             <button onclick="modalAction('{{ url('barang/create_ajax') }}')" class="btn btn-sm btn-outline-success mt-1" title="Tambah Ajax">
                 <i class="fa fa-plus"></i>

@@ -362,4 +362,44 @@ public function import_ajax(Request $request)
     return redirect('/');
 }
 
+public function export_excel_penjualan()
+{
+    $data = PenjualanModel::with('user')->orderBy('penjualan_tanggal')->get();
+    $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+    $sheet = $spreadsheet->getActiveSheet();
+
+    $sheet->setCellValue('A1', 'ID');
+    $sheet->setCellValue('B1', 'Tanggal');
+    $sheet->setCellValue('C1', 'Total');
+    $sheet->setCellValue('D1', 'User');
+    $sheet->getStyle('A1:D1')->getFont()->setBold(true);
+
+    $row = 2;
+    foreach ($data as $value) {
+        $sheet->setCellValue('A' . $row, $value->penjualan_id);
+        $sheet->setCellValue('B' . $row, $value->penjualan_tanggal);
+        $sheet->setCellValue('C' . $row, $value->penjualan_total);
+        $sheet->setCellValue('D' . $row, $value->user->user_nama);
+        $row++;
+    }
+
+    foreach (range('A', 'D') as $columnID) {
+        $sheet->getColumnDimension($columnID)->setAutoSize(true);
+    }
+
+    $sheet->setTitle('Data Penjualan');
+    $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+    $filename = 'Data Penjualan ' . date('Y-m-d H:i:s') . '.xlsx';
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header('Content-Disposition: attachment;filename="' . $filename . '"');
+    header('Cache-Control: max-age=0');
+    header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+    header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+    header('Cache-Control: cache, must-revalidate');
+    header('Pragma: public');
+
+    $writer->save('php://output');
+    exit;
+}
+
 }

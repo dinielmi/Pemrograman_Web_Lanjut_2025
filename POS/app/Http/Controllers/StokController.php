@@ -405,4 +405,44 @@ public function import_ajax(Request $request)
     return redirect('/');
 }
 
+public function export_excel_stok()
+{
+    $data = StokModel::with('barang', 'supplier')->orderBy('stok_tanggal')->get();
+    $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+    $sheet = $spreadsheet->getActiveSheet();
+
+    $sheet->setCellValue('A1', 'Jumlah');
+    $sheet->setCellValue('B1', 'Tanggal');
+    $sheet->setCellValue('C1', 'Barang');
+    $sheet->setCellValue('D1', 'Supplier');
+    $sheet->getStyle('A1:D1')->getFont()->setBold(true);
+
+    $row = 2;
+    foreach ($data as $value) {
+        $sheet->setCellValue('A' . $row, $value->stok_jumlah);
+        $sheet->setCellValue('B' . $row, $value->stok_tanggal);
+        $sheet->setCellValue('C' . $row, $value->barang->barang_nama);
+        $sheet->setCellValue('D' . $row, $value->supplier->supplier_nama);
+        $row++;
+    }
+
+    foreach (range('A', 'D') as $columnID) {
+        $sheet->getColumnDimension($columnID)->setAutoSize(true);
+    }
+
+    $sheet->setTitle('Stok Barang');
+    $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+    $filename = 'Stok Barang ' . date('Y-m-d H:i:s') . '.xlsx';
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header('Content-Disposition: attachment;filename="' . $filename . '"');
+    header('Cache-Control: max-age=0');
+    header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+    header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+    header('Cache-Control: cache, must-revalidate');
+    header('Pragma: public');
+
+    $writer->save('php://output');
+    exit;
+}
+
 }

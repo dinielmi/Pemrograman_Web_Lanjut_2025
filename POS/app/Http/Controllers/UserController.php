@@ -417,4 +417,41 @@ public function import_ajax(Request $request)
     return redirect('/');
 }
 
+public function export_excel()
+{
+    $data = UserModel::with('level')->orderBy('name')->get();
+
+    $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+    $sheet = $spreadsheet->getActiveSheet();
+
+    $sheet->setCellValue('A1', 'No');
+    $sheet->setCellValue('B1', 'Nama');
+    $sheet->setCellValue('C1', 'Email');
+    $sheet->setCellValue('D1', 'Level');
+    $sheet->getStyle('A1:D1')->getFont()->setBold(true);
+
+    $no = 1;
+    $baris = 2;
+    foreach ($data as $value) {
+        $sheet->setCellValue('A' . $baris, $no++);
+        $sheet->setCellValue('B' . $baris, $value->name);
+        $sheet->setCellValue('C' . $baris, $value->email);
+        $sheet->setCellValue('D' . $baris, $value->level->level_nama ?? '-');
+        $baris++;
+    }
+
+    foreach (range('A', 'D') as $columnID) {
+        $sheet->getColumnDimension($columnID)->setAutoSize(true);
+    }
+
+    $sheet->setTitle('Data User');
+    $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+    $filename = 'Data User ' . date('Y-m-d H-i-s') . '.xlsx';
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header("Content-Disposition: attachment; filename=\"$filename\"");
+    $writer->save('php://output');
+    exit;
+}
+
+
 }

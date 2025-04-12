@@ -302,6 +302,38 @@ class LevelController extends Controller
     
         return redirect('/');
     }
-    
+
+    public function export_excel()
+    {
+        $data = LevelModel::select('level_nama')->orderBy('level_nama')->get();
+
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'Nama Level');
+        $sheet->getStyle('A1:B1')->getFont()->setBold(true);
+
+        $no = 1;
+        $baris = 2;
+        foreach ($data as $value) {
+            $sheet->setCellValue('A' . $baris, $no++);
+            $sheet->setCellValue('B' . $baris, $value->level_nama);
+            $baris++;
+        }
+
+        foreach (range('A', 'B') as $columnID) {
+            $sheet->getColumnDimension($columnID)->setAutoSize(true);
+        }
+
+        $sheet->setTitle('Data Level');
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $filename = 'Data Level ' . date('Y-m-d H-i-s') . '.xlsx';
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header("Content-Disposition: attachment; filename=\"$filename\"");
+        $writer->save('php://output');
+        exit;
+    }
+
 
 }   
