@@ -52,6 +52,9 @@ Route::post('logout', [AuthController::class, 'logout'])->middleware('auth');
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/register', [AuthController::class, 'store_user'])->name('store_user');
 
+Route::get('/user/profile', [UserController::class, 'profile_page'])->name('user.profile');
+Route::post('/user/update_picture', [UserController::class, 'update_picture'])->name('user.update_picture');
+
 Route::middleware(['auth'])->group(function () { // artinya semua route di dalam group ini harus login dulu
     Route::get('/', [HomepageController::class, 'index']);
 });

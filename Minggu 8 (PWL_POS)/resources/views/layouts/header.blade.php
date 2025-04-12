@@ -136,9 +136,12 @@
             <i class="fas fa-user"></i> <!-- Ikon profil -->
         </a>
         <div class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                <i class="fas fa-sign-out-alt"></i> Logout <!-- Ikon logout -->
-            </a>
+          <a class="dropdown-item" href="{{ url('/user/profile') }}">
+              <i class="fas fa-user-circle"></i> Profile <!-- Ikon profil -->
+          </a>
+          <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+              <i class="fas fa-sign-out-alt"></i> Logout <!-- Ikon logout -->
+          </a>
             <form id="logout-form" action="{{ url('logout') }}" method="POST" style="display: none;">
                 @csrf
             </form>
