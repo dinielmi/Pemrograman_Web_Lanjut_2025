@@ -82,7 +82,7 @@
                         <div class="mt-4">
                             <div class="alert alert-info">
                                 <h5>Informasi</h5>
-                                <p class="mb-0">Anda dapat mengubah foto profil dengan mengunggah gambar baru. Format yang didukung: JPG, PNG, dan JPEG dengan ukuran maksimal 2MB.</p>
+                                <p class="mb-0">Anda dapat mengubah foto profil dengan mengunggah gambar baru. Format yang didukung: JPG, PNG, dan JPEG </p>
                             </div>
                         </div>
                     </div>

@@ -21,7 +21,7 @@
                 <div class="col-10">
                     <select class="form-control" name="barang_id" required>
                         <option value="">- Pilih Barang -</option>
-                        @foreach ($barangs as $item)
+                        @foreach ($barang as $item)
                             <option value="{{ $item->barang_id }}" {{ old('barang_id') == $item->barang_id ? 'selected' : '' }}>
                                 {{ $item->barang_id }} - {{ $item->barang_nama }}
                             </option>

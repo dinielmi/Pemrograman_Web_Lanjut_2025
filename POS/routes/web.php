@@ -59,7 +59,11 @@ Route::middleware(['auth'])->group(function () { // artinya semua route di dalam
     Route::get('/', [HomepageController::class, 'index']);
 });
 
-Route::middleware(['authorize:ADM, 22MNG, STF'])->group(function () {
+Route::middleware(['authorize:DIR'])->group(function () {
+    Route::get('/', [HomepageController::class, 'index']);
+});
+
+Route::middleware(['authorize:ADM, MNG, STF'])->group(function () {
     Route::group(['prefix' => 'user'], function () {
         Route::get('/', [UserController::class, 'index']);         
         Route::post('/list', [UserController::class, 'list']);      
@@ -251,23 +255,23 @@ Route::middleware(['authorize:ADM'])->group(function () {
 });
 
 
-// Route::middleware(['authorize:ADM'])->group(function () {
-    // Route::prefix('penjualan_detail')->group(function () {
-    //     Route::get('/', [PenjualanDetailController::class, 'index']);
-    //     Route::post('/list', [PenjualanDetailController::class, 'list']);
-    //     Route::get('/create', [PenjualanDetailController::class, 'create']);
-    //     Route::post('/', [PenjualanDetailController::class, 'store']);
+Route::middleware(['authorize:ADM'])->group(function () {
+    Route::prefix('penjualan_detail')->group(function () {
+        Route::get('/', [PenjualanDetailController::class, 'index']);
+        Route::post('/list', [PenjualanDetailController::class, 'list']);
+        Route::get('/create', [PenjualanDetailController::class, 'create']);
+        Route::post('/', [PenjualanDetailController::class, 'store']);
 
-    //       //route ajax
-    //       Route::get('/create_ajax', [PenjualanDetailController::class, 'create_ajax']);
-    //       Route::post('/ajax', [PenjualanDetailController::class, 'store_ajax']);
+          //route ajax
+          Route::get('/create_ajax', [PenjualanDetailController::class, 'create_ajax']);
+          Route::post('/ajax', [PenjualanDetailController::class, 'store_ajax']);
 
-    //     Route::get('/{id}', [PenjualanDetailController::class, 'show']);
-    //     Route::get('/{id}/edit', [PenjualanDetailController::class, 'edit']);
-    //     Route::put('/{id}', [PenjualanDetailController::class, 'update']);
-    //     Route::delete('/{id}', [PenjualanDetailController::class, 'destroy']);
-    // });
-// });
+        Route::get('/{id}', [PenjualanDetailController::class, 'show']);
+        Route::get('/{id}/edit', [PenjualanDetailController::class, 'edit']);
+        Route::put('/{id}', [PenjualanDetailController::class, 'update']);
+        Route::delete('/{id}', [PenjualanDetailController::class, 'destroy']);
+    });
+});
 
 
 

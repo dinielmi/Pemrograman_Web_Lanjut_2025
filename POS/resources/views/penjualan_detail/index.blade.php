@@ -38,11 +38,11 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Harga</th>
-                    <th>Jumlah</th>
-                    <th>Total</th>
                     <th>Penjualan_id</th>
                     <th>Barang_id</th>
+                    <th>Jumlah</th>
+                    <th>Harga</th>
+                    <th>Total</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -77,11 +77,11 @@
             },
             columns: [
                 { data: "detail_id" },
-                { data: "harga" },
-                { data: "jumlah" },
-                { data: "total" },
                 { data: "penjualan_id" },
                 { data: "barang_id" },
+                { data: "jumlah" },
+                { data: "harga" },
+                { data: "total" },
                 { data: "aksi", orderable: false, searchable: false }
             ]
 

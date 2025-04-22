@@ -115,7 +115,7 @@ class PenjualanDetailController extends Controller
     
         $barang = BarangModel::all();
     
-        return view('penjualan_detail.create', compact('breadcrumb', 'page', 'activeMenu', 'barangs'));
+        return view('penjualan_detail.create', compact('breadcrumb', 'page', 'activeMenu', 'barang'));
     }    
     
 

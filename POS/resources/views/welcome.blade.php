@@ -8,7 +8,7 @@
            <span style="color: blue;">Hello, how are you?</span> <br><br>
            <span style="color: green;">こんにちは、お元気ですか？</span><br><br>
            <span style="color: orange;">你好，你好吗？</span> <br><br>
-           <span style="color: red;">안녕하세요, 어떻게 지내세요?</span> <br>
+           {{-- <span style="color: red;">안녕하세요, 어떻게 지내세요?</span> <br> --}}
        </h3>
        <div class="card-tools"></div>
    </div>

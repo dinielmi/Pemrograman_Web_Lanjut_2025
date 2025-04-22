@@ -22,7 +22,7 @@
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
 
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-md-12">
                 <div class="form-group row">
                     <label for="filter_pembeli" class="col-1 control-label col-form-label">Filter:</label>
@@ -32,7 +32,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         {{-- Tabel --}}
         <table class="table table-bordered table-hover table-sm table-striped" id="table_penjualan">
